@@ -37,6 +37,13 @@ namespace SortImage
             thumbnails = new Dictionary<string, Bitmap>();
             fingerprint_feild = new ArrayList();
             filename_feild = new ArrayList();
+
+            FileTypes = new ArrayList();
+            FileTypes.Add("*.JPG");
+            FileTypes.Add("*.JPEG");
+            FileTypes.Add("*.BMP");
+            FileTypes.Add("*.PNG");
+
         }
 
         public ArrayList GetFingerprints()
@@ -151,8 +158,7 @@ namespace SortImage
             }
         }
 
-
-
+        
         /// <summary>
         /// Check a directory for duplicates (No GIF at the moment due to animation issues)
         /// </summary>
@@ -160,12 +166,6 @@ namespace SortImage
         public Dictionary<string, int> CheckDirDups(string parth, ReportDelegate report,DoWorkEventArgs ecp, BackgroundWorker worker)
         {
             Dictionary<string, int> files = new Dictionary<string, int>();
-            FileTypes = new ArrayList();
-            FileTypes.Add("*.JPG");
-            FileTypes.Add("*.JPEG");
-            //FileTypes.Add("*.GIF");
-            FileTypes.Add("*.BMP");
-            FileTypes.Add("*.PNG");
             string[] szFiles;
             FileArray = new ArrayList();
             foreach (string szType in FileTypes)
@@ -242,12 +242,6 @@ namespace SortImage
         /// <param name="parth"></param>
         public void CheckMD5s(string parth)
         {
-            FileTypes = new ArrayList();
-            FileTypes.Add("*.JPG");
-            FileTypes.Add("*.JPEG");
-            //FileTypes.Add("*.GIF");
-            FileTypes.Add("*.BMP");
-            FileTypes.Add("*.PNG");
             // process current folder
             string[] szFiles;
             FileArray = new ArrayList();

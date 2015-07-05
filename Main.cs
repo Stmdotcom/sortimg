@@ -1461,42 +1461,42 @@ namespace SortImage
                 {
                     string fold = folderBrowserDialog1.SelectedPath;
                     Dictionary<string, int> hashCounts = new Dictionary<string, int>();
-                    ImageMatcherSpeed t = new ImageMatcherSpeed();
-                    ProcceingDialog pro = new ProcceingDialog();
-                    ThreadStart t1 = delegate { t.CheckMD5s(fold); };
-                    ThreadStart t2 = delegate { pro.ShowDialog(); };
-                    Thread tt = new Thread(t1);
-                    Thread ttt = new Thread(t2);
-                    tt.Start();
-                    ttt.Start();
+                    ImageMatcherSpeed md5Matcher = new ImageMatcherSpeed();
+                    ProcceingDialog proDialog = new ProcceingDialog();
+                    ThreadStart threadDelegateMD5 = delegate { md5Matcher.CheckMD5s(fold); };
+                    ThreadStart threadDelegateDialog = delegate { proDialog.ShowDialog(); };
+                    Thread threadMD5 = new Thread(threadDelegateMD5);
+                    Thread threadDialog = new Thread(threadDelegateDialog);
+                    threadMD5.Start();
+                    threadDialog.Start();
                     int once = 1;
-                    while (tt.IsAlive)
+                    while (threadMD5.IsAlive)
                     {
                         Thread.Sleep(50);
 
-                        if (pro.cancel == true)
+                        if (proDialog.cancel == true)
                         {
-                            tt.Abort();
-                            ttt.Abort();
+                            threadMD5.Abort();
+                            threadDialog.Abort();
                         }
 
 
-                        if (once == 1 && t.getProgressMax() >= 2)
+                        if (once == 1 && md5Matcher.getProgressMax() >= 2)
                         {
-                            pro.SetProgressMax(t.getProgressMax());
+                            proDialog.SetProgressMax(md5Matcher.getProgressMax());
                             once = 0;
                         }
-                        pro.UpdateProgress(t.getProgress());
+                        proDialog.UpdateProgress(md5Matcher.getProgress());
 
-                        if (t.getProgress() == t.getProgressMax())
+                        if (md5Matcher.getProgress() == md5Matcher.getProgressMax())
                         {
-                            tt.Join();
-                            ttt.Join();
+                            threadMD5.Join();
+                            threadDialog.Join();
                         }
                     }
-                    tt.Abort();
-                    ttt.Abort();
-                    ArrayList fingerprints = t.GetFingerprints();
+                    threadMD5.Abort();
+                    threadDialog.Abort();
+                    ArrayList fingerprints = md5Matcher.GetFingerprints();
                     int i = 0;
                     foreach (string print in fingerprints)
                     {
@@ -1593,9 +1593,8 @@ namespace SortImage
 
         private void ReportProgresshandler(int percent, string state)
         {
-            bwSortImageFolder.ReportProgress(percent);  
-            
-// also does the Invoke
+            bwSortImageFolder.ReportProgress(percent);
+            // also does the Invoke
         }
 
         private void bwSortImageFolder_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E81C6CA7-9A31-4DFB-9E59-063C381E27B7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SortImage</RootNamespace>
+    <AssemblyName>SortImg</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.2.0</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\..\..\DeadCodeRuleset.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\Data.cs" />
+    <Compile Include="Classes\MultiMap.cs" />
+    <Compile Include="Classes\NewNode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Classes\NewNode.designer.cs">
+      <DependentUpon>NewNode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\Utils.cs" />
+    <Compile Include="Classes\Utils64.cs" />
+    <Compile Include="Classes\DynamicButtons.cs" />
+    <Compile Include="Classes\ImageViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Classes\ImageViewer.designer.cs">
+      <DependentUpon>ImageViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\ThumbnailController.cs" />
+    <Compile Include="Classes\ThumbnailFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\ImageMatcherSpeed.cs" />
+    <Compile Include="Classes\FileNameBuilder.cs" />
+    <Compile Include="Classes\Ini.cs" />
+    <Compile Include="Classes\SortImgSettings.cs" />
+    <Compile Include="Classes\ThumbnailBuilder.cs" />
+    <Compile Include="Classes\Utils32.cs" />
+    <Compile Include="Dialogs\AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ConfigDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ConfigDialog.Designer.cs">
+      <DependentUpon>ConfigDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\BmpToPngDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\BmpToPngDialog.designer.cs">
+      <DependentUpon>BmpToPngDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ProcceingDialog2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ProcceingDialog2.Designer.cs">
+      <DependentUpon>ProcceingDialog2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DeleteDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\DeleteDialog.Designer.cs">
+      <DependentUpon>DeleteDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DupDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\DupDialog.Designer.cs">
+      <DependentUpon>DupDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\Logging.cs" />
+    <Compile Include="Dialogs\ErrorDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ErrorDialog.Designer.cs">
+      <DependentUpon>ErrorDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\FolderMergeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\FolderMergeDialog.designer.cs">
+      <DependentUpon>FolderMergeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\ProcceingDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\ProcceingDialog.Designer.cs">
+      <DependentUpon>ProcceingDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\GifDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\GifDialog.Designer.cs">
+      <DependentUpon>GifDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\SortDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SortDialog.Designer.cs">
+      <DependentUpon>SortDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\SourceDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogs\SourceDialog.Designer.cs">
+      <DependentUpon>SourceDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Classes\ImageViewer.resx">
+      <DependentUpon>ImageViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Classes\NewNode.resx">
+      <DependentUpon>NewNode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ConfigDialog.resx">
+      <DependentUpon>ConfigDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\BmpToPngDialog.resx">
+      <DependentUpon>BmpToPngDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ProcceingDialog2.resx">
+      <DependentUpon>ProcceingDialog2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\DeleteDialog.resx">
+      <DependentUpon>DeleteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\DupDialog.resx">
+      <DependentUpon>DupDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ErrorDialog.resx">
+      <DependentUpon>ErrorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\GifDialog.resx">
+      <DependentUpon>GifDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\FolderMergeDialog.resx">
+      <DependentUpon>FolderMergeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\ProcceingDialog.resx">
+      <DependentUpon>ProcceingDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\SortDialog.resx">
+      <DependentUpon>SortDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogs\SourceDialog.resx">
+      <DependentUpon>SourceDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Classes\TransPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\PreviewLayer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
+    <Content Include="Images\corrupt.jpg" />
+    <Content Include="Images\Loading.PNG" />
+    <Content Include="Images\thumberror.jpg" />
+    <Content Include="Images\X_32x32-32.png" />
+    <None Include="Resources\folder_new.png" />
+    <None Include="Resources\bin.png" />
+    <None Include="Resources\undo.png" />
+    <None Include="Resources\notes.png" />
+    <None Include="Resources\zoom_32x32-32.png" />
+    <None Include="Resources\add.png" />
+    <None Include="Resources\redo.png" />
+    <None Include="Resources\remove.png" />
+    <None Include="Resources\next.png" />
+    <None Include="Resources\fill.png" />
+    <None Include="Resources\fill.bmp" />
+    <Content Include="Resources\icon.png" />
+    <Content Include="Resources\ImageSortHelp.jpg" />
+    <Content Include="Text\Changelog.txt" />
+    <Content Include="Images\button_cancel-64.png" />
+    <Content Include="Images\Folder.png" />
+    <Content Include="Images\My-Pictures.png" />
+    <Content Include="Images\Search.png" />
+    <Content Include="Images\undo-64.png" />
+    <Content Include="Text\ToDo_Bugs.txt" />
+    <Content Include="Text\Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

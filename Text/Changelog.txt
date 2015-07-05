@@ -1,0 +1,43 @@
+2.0.3
+==Features==
+- Vastly improved drag select for selecting multiple images (See comments from last release)
+
+==Bug Fixes==
+- Removed conflict warning when assigning hotkey to same hotkey for the same action.
+- Source cleanup
+- Spelling improvements
+
+2.0.2
+==Features==
+- Added ability to check MD5 checksums or files sizes with the folder merge tool.
+- Added cancellation buttons for threaded image matching operations. User's can now cleanly abort before process completion.
+- Can drag select (Between images) and shift select multiple images in preview to move in bulk groups (WIP: Works fine however select is awkward and selection box persists)
+
+==Bug Fixes==
+- Should be supplying a release version of the compiled exe rather than a debug version from now on.
+- Removed offensive and un-descriptive message-box alerts.
+- Added program icon
+- Removed the unimplemented 'Remove' option when right clicking the "Move" button for a destination folder,
+	only the 'Change' option exists now.
+- Fixed more spelling errors
+- Cleaned up minor UI aesthetics 
+
+
+2.0.1
+==Features==
+NA
+
+==Bug Fixes==
+- Handles images that are deleted or moved outside of the program yet are still present in the queue
+- Changing the thumbsize no longer gives critical exceptions if no image
+- Handles move/delete requests on nothing correctly
+- Better INI and saved settings handling.
+- Removed option to change the way the main image displayed (Pointless option)
+- Code line that created directories for the auto image matcher was missing.
+- Fixed progress bar updating when loading more source folders after initial choice.
+- Undo tracking is no longer resets when loading more source folders after initial choice.
+- First image is now auto picked correctly when loading more source folders after initial choice.
+- Log no longer resets when loading more source folders after initial choice.
+
+2.0.0 (02/12/2011)
+Re-release. Check old change log for previous changes.

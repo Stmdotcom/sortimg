@@ -1,0 +1,43 @@
+﻿Due to moving onto the tagging based program, this is likely a final list of possible features and known bugs. The unlikely features are very unlikely to be implemented.
+
+======================
+Possible (Unlikely) Features
+======================
+
+- Overhaul of the tag system. Try to integrate with meta-data (in the image files as viable in windows explorer) in images if possible. 
+						(Reflection on this idea has lead to the creation of a new image sorting system based fully around tagging rather than filepaths)
+
+- Store MD5 fingerprint values of images in a file for each folder. Make matching images much quicker. 
+						(This will likely be intergrated into the new tagging program then brought back into SortImg)
+
+======================
+Possible (Likely) Features
+======================
+- Text search on filenames of upcoming image queue. 
+					(Would give a much greater amount of control over handling input images)
+- Convert the hash compare to a background worker rather than loose threads
+					(Needed incase the time taken is unreasnable)
+- UI improvments
+		- Make spliter between main view and tag panel obvious
+		- Add mouse over info for buttons
+		- Give ablity to completely hide the tag panel
+		- Add a boarder to the preview panel
+		- Quality of thumbnails should improve when the size of the preview panel is increaed.
+		- Dynamicly calculate the load amount based off main window size and the size of the preview panel.
+		- Change the tagging area to have tag area above the buttons and enter tage area, when draing panel up make the buttons constnace and grow the tag area.
+		- Needs message if no matches are found on the MD5 folder sort
+- Mutliselect.
+		- Simply an filled array of selected images then sequenctly call the move, without refreshing the main image on each move, preview would just show last selected.
+					(Fill on clicks (alt clicks like file exploreer? have shift click as well?, empty on another click, Try to enabel drag select)
+
+======================
+Bugs
+======================
+
+- Mouse over on the main image has issues.
+- When adding a new folder for source the last dir should be used as a base point. This is relivent if the dialog is closed then loaded again.
+- Spelling
+- When clicking a image that is no existant it shows as a error image, it sould also update in the qeue and be removed. Rather it sould just remove, select the first item in queue (If items) and show a dialog saying selection has been removed or is bugged.
+- Logging might have issues, needs to be tested more. (Suggest leaving off unless testing)
+- Auto match checking on file moves might not work correctly even if enabled. (Suggest leaving off unless testing)
+- Check that hotkeys are disabled when writing tags 

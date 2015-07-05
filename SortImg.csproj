@@ -264,14 +264,11 @@
     <None Include="Resources\fill.bmp" />
     <Content Include="Resources\icon.png" />
     <Content Include="Resources\ImageSortHelp.jpg" />
-    <Content Include="Text\Changelog.txt" />
     <Content Include="Images\button_cancel-64.png" />
     <Content Include="Images\Folder.png" />
     <Content Include="Images\My-Pictures.png" />
     <Content Include="Images\Search.png" />
     <Content Include="Images\undo-64.png" />
-    <Content Include="Text\ToDo_Bugs.txt" />
-    <Content Include="Text\Readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

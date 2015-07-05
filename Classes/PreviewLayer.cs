@@ -9,7 +9,7 @@ namespace SortImage
     public class PreviewLayer
     {
         public Panel panel4;
-        public TableLayoutPanel panel3;
+        public TableLayoutPanel layoutPanel;
         public Button ClosePanelButton;
         public string folder;
         public ArrayList filePaths;
@@ -18,7 +18,9 @@ namespace SortImage
         public int prePage;
         public ThumbnailBuilder tb;
         private FileNameBuilder fb;
-        
+
+        const int IMAGECOUNT = 18;
+
         public PreviewLayer(Size s, string folderr, Button but, int preP)
         {
             folder = folderr;
@@ -39,7 +41,7 @@ namespace SortImage
             tb = new ThumbnailBuilder();
             butt = but;
             prePage = preP;
-            panel3 = new TableLayoutPanel();
+            layoutPanel = new TableLayoutPanel();
             ClosePanelButton = new Button();
             nextSetButton = new Button();
             nextSetButton.Text = "More...";
@@ -51,15 +53,15 @@ namespace SortImage
             ClosePanelButton.ImageAlign = ContentAlignment.MiddleRight;
             nextSetButton.Image = new Bitmap(global ::SortImage.Properties.Resources.next.GetThumbnailImage(nextSetButton.Size.Height, nextSetButton.Size.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero));
             nextSetButton.ImageAlign = ContentAlignment.MiddleRight;
-            this.panel4.Controls.Add(panel3);
+            this.panel4.Controls.Add(layoutPanel);
             panel4.Size = s;
             panel4.BackColor = Color.Silver;
-            this.panel3.ColumnCount = 6;
-            this.panel3.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
-            this.panel3.Size = new Size(s.Width, s.Height - ClosePanelButton.Height);
-            this.panel3.Location = new System.Drawing.Point(50, 50);
-            this.panel3.Name = "panel3";
-            this.panel3.AutoScroll = true;
+            this.layoutPanel.ColumnCount = 6;
+            this.layoutPanel.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
+            this.layoutPanel.Size = new Size(s.Width, s.Height - ClosePanelButton.Height);
+            this.layoutPanel.Location = new System.Drawing.Point(50, 50);
+            this.layoutPanel.Name = "layoutPanel";
+            this.layoutPanel.AutoScroll = true;
             nextSetButton.Left = 50;
             ClosePanelButton.Left = panel4.Width - ClosePanelButton.Width + 5;
         }
@@ -73,7 +75,7 @@ namespace SortImage
             {
                 filePaths = fb.ProcessDirectory(folder);
             }
-            int loop = (prePage * 18);
+            int loop = (prePage * IMAGECOUNT);
             foreach (string s in filePaths)
             {
                 if (loopCount < loop)
@@ -82,13 +84,13 @@ namespace SortImage
                 }
                 else
                 {
-                    if (i < 18)
+                    if (i < IMAGECOUNT)
                     {
                         picbox = new PictureBox();
                         picbox.Size = new Size((int)(siz.Width * .15), (int)(siz.Width * .15));
                         picbox.Name = "dynaPictureBox" + i;
                         picbox.Click += new EventHandler(Picturebox_Click);
-                        panel3.Controls.Add(picbox);
+                        layoutPanel.Controls.Add(picbox);
                         SetImage(picbox, s);
                     }
                     else
@@ -98,6 +100,12 @@ namespace SortImage
                     i++;
                 }
             }
+
+            //If there was less than IMAGECOUNT images...
+            if (i < IMAGECOUNT) {
+                 nextSetButton.Hide();
+            }
+
         }
 
         public void SetImage(PictureBox picbox, String fileName)

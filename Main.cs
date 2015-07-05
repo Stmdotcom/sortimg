@@ -70,7 +70,7 @@ namespace SortImage
         private ThumbnailBuilder tnb;
         private ImageMatcherSpeed imageMatcher;
         private ImageViewer activeImageViewer;
-        public PreviewLayer tl;
+        public PreviewLayer previewPanel;
         public Panel panel3;
         public Panel panelload;
         public ToolTip ImageInfo;
@@ -945,7 +945,7 @@ namespace SortImage
             }
         }
 
-        // Generates the control in this case it is for the output folders
+        // Generates the control in this case it is for the output folders    
         private void GenerateControl(int num)
         {
             String path = workingFolders[num];
@@ -1035,21 +1035,12 @@ namespace SortImage
             switch (e.Button)
             {
                 case MouseButtons.Left:
-                    panel3 = new TableLayoutPanel();
-                    Loading();
-                    Hide_Main(false);
+                   
                     Button clickedButton = (Button)sender;
                     string index = clickedButton.Name.Substring("dynamicPictureBox".Length);
                     fileparth = workingFolders[Convert.ToInt16(index)];
-                    tl = new PreviewLayer(mainPanel.Size, fileparth, clickedButton, 0);
-                    tl.ClosePanelButton.Text = "Close";
-                    tl.ClosePanelButton.Click += new EventHandler(ClosePanelButton_Click);
-                    tl.nextSetButton.Text = "More...";
-                    tl.nextSetButton.Click += new EventHandler(button1_Click);
-                    mainPanel.Controls.Add(tl.panel4);
-                    panel3 = tl.panel4;
-                    panelload.Dispose();
-                    panel3.BringToFront();
+                    PreviewBuild(clickedButton);
+
                     break;
                 case MouseButtons.Right:
                     Button clickeddButton = (Button)sender;
@@ -1174,29 +1165,35 @@ namespace SortImage
             fileparth = null;
         }
 
-        // Loads the preview panel and creates the buttons for it
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (nextCount > 0)
-            {
+        private void PreviewBuild(Button clickedButton) {
+            if (nextCount > 0) {
                 panel3.Dispose();
             }
+
             panel3 = new TableLayoutPanel();
             Loading();
 
             Hide_Main(false);
-            tl = new PreviewLayer(mainPanel.Size, fileparth, null, nextCount);
-            tl.ClosePanelButton.Text = "Close";
-            tl.ClosePanelButton.Click += new EventHandler(ClosePanelButton_Click);
-            tl.nextSetButton.Text = "More...";
-            tl.nextSetButton.Click += new EventHandler(button1_Click);
-            tl.panel4.Dock = DockStyle.Right;
-            mainPanel.Controls.Add(tl.panel4);
-            panel3 = tl.panel4;
+
+            previewPanel = new PreviewLayer(mainPanel.Size, fileparth, clickedButton, nextCount);
+            previewPanel.ClosePanelButton.Text = "Close";
+            previewPanel.ClosePanelButton.Click += new EventHandler(ClosePanelButton_Click);
+            previewPanel.nextSetButton.Text = "More...";
+            previewPanel.nextSetButton.Click += new EventHandler(button1_Click);
+            mainPanel.Controls.Add(previewPanel.panel4);
+            panel3 = previewPanel.panel4;
             panelload.Dispose();
             panel3.Dock = DockStyle.Fill;
             panel3.BringToFront();
             nextCount++;
+        }
+
+
+
+        // Loads the preview panel and creates the buttons for it
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PreviewBuild(null);
         }
 
         // Methord to handle the undo, that is moving a file back to where it came from

@@ -1,0 +1,11 @@
+﻿
+
+:: BUG LISTING TEMPLATE
+
+Summary: <SUMMARY OF ISSUE>
+Replication: 
+	- <STEP 1>
+	- <STEP 2>
+	...
+Expected: <EXPECTED OUTCOME>
+Current: <CURRENT OUTCOME>

@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SortImg")]
-[assembly: AssemblyCopyright("Copyright © Steven Marsh 2014")]
+[assembly: AssemblyCopyright("Steven Marsh - 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

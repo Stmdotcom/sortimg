@@ -146,14 +146,14 @@ namespace SortImage
             if (fileList.Count != 0)
             {
                 CancelScanning = false;
-                Thread thread = new Thread(new ThreadStart(LoadSett));
+                Thread thread = new Thread(new ThreadStart(BuildSet));
                 thread.IsBackground = true;
                 thread.Start();
             }
         }
 
 
-        private void LoadSett()
+        private void BuildSet()
         {
             if (this.OnStart != null)
             {

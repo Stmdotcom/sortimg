@@ -88,14 +88,16 @@ namespace SortImage
             g.DrawRectangle(new Pen(Color.Gray), dl, dt, dw, dh);
 
             if (isThumbnail)
-            for (int j = 0; j < 3; j++)
             {
-                g.DrawLine(new Pen(Color.DarkGray),
-                    new Point(dl + 3, dt + dh + 1 + j),
-                    new Point(dl + dw + 3, dt + dh + 1 + j));
-                g.DrawLine(new Pen(Color.DarkGray),
-                    new Point(dl + dw + 1 + j, dt + 3),
-                    new Point(dl + dw + 1 + j, dt + dh + 3));
+                for (int j = 0; j < 3; j++)
+                {
+                    g.DrawLine(new Pen(Color.DarkGray),
+                        new Point(dl + 3, dt + dh + 1 + j),
+                        new Point(dl + dw + 3, dt + dh + 1 + j));
+                    g.DrawLine(new Pen(Color.DarkGray),
+                        new Point(dl + dw + 1 + j, dt + 3),
+                        new Point(dl + dw + 1 + j, dt + dh + 3));
+                }
             }
 
             g.DrawImage(image, dl, dt, dw, dh);

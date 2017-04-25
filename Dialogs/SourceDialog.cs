@@ -36,11 +36,13 @@ namespace SortImage
 
         private void buildtips()
         {
-            ToolTip toolTip1 = new ToolTip();
-            toolTip1.AutoPopDelay = int.MaxValue;
-            toolTip1.InitialDelay = 1;
-            toolTip1.ReshowDelay = 50;
-            toolTip1.ShowAlways = true;
+            ToolTip toolTip1 = new ToolTip()
+            {
+                AutoPopDelay = int.MaxValue,
+                InitialDelay = 1,
+                ReshowDelay = 50,
+                ShowAlways = true
+            };
             toolTip1.SetToolTip(this.help3, "Must pick the main folders that are to be sorted");
             toolTip1.SetToolTip(this.help4, "Must pick a folder to handle duplicates and marked deletion if on 'mark' delete mode");
         }
@@ -117,7 +119,7 @@ namespace SortImage
             {
                 string fold = folderBrowserDialog1.SelectedPath;
 
-                if (Checkfolder(workingFolders, fold) == false)
+                if (Array.IndexOf(workingFolders, fold) >= 0)
                 {
                     MessageBox.Show("Don't pick duplicate folders");
                 }
@@ -139,7 +141,7 @@ namespace SortImage
             folderBrowserDialog1.ShowNewFolderButton = true;
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (Checkfolder(workingFolders, folderBrowserDialog1.SelectedPath) == false)
+                if (Array.IndexOf(workingFolders,folderBrowserDialog1.SelectedPath) >= 0)
                 {
                     MessageBox.Show("Two folders are the same. Please pick a diffrent folder to source(s)");
                 }
@@ -151,21 +153,7 @@ namespace SortImage
                 }
             }
         }
-
-
-        private bool Checkfolder(string[] a, String b)
-        {
-            foreach (String st in a)
-            {
-                if (st == b)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-
+        
         private void SourceDialogDone_Click(object sender, EventArgs e)
         {
         }

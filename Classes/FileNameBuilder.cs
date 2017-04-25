@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Windows.Forms;
 using System.Collections;
@@ -114,7 +112,7 @@ namespace SortImage
                 dest = Destination + '\\' + Path.GetFileName(source);
             }
             string check = System.IO.Path.GetFileName(dest);
-            if (check.Length > 200) //Reset file name if to large to avoid error on unable to write file name. This is not acurate. There are diffrences between the full parth name and the file name depending on the file system in use.
+            if (check.Length > 200) //Reset file name if to large to avoid error on unable to write file name. This is not acurate. There are diffrences between the full path name and the file name depending on the file system in use.
             {
                 MessageBox.Show("File name is over or close to char limit, file name reset");
                 if (renameIteration != 0)

@@ -1,0 +1,7 @@
+﻿2.0.4
+	- Removed junk files and consolidated resources
+	- Fixed various issues related to the preview for the destination folder
+	- Improved tooltip hover on main image preview
+
+2.0.3
+	- Github Release

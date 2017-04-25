@@ -42,6 +42,9 @@ namespace SortImage
         private int lastButtonIndex = 999;
         private bool allowMove = true;
         private bool is64bit = false;
+        private string currentToolTipText = "N/A";
+        private int lastToolTipX;
+        private int lastToolTipY;
         private List<string> currentTagsList;
 
         private Point selectionStart;
@@ -71,7 +74,8 @@ namespace SortImage
         private ImageMatcherSpeed imageMatcher;
         private ImageViewer activeImageViewer;
         public PreviewLayer previewPanel;
-        public Panel panel3;
+        private Button activePreviewButton;
+        public Panel panelinner;
         public Panel panelload;
         public ToolTip ImageInfo;
         public List<ImageViewer> selected;
@@ -1148,10 +1152,12 @@ namespace SortImage
         // should be changed if I can find how to load thumbnails better
         private void Loading()
         {
-            panelload = new Panel();
-            panelload.Size = mainPanel.Size;
-            panelload.BackgroundImage = global::SortImage.Properties.Resources.loading;
-            panelload.BackgroundImageLayout = ImageLayout.Stretch;
+            panelload = new Panel()
+            {
+                Size = mainPanel.Size,
+                BackgroundImage = global::SortImage.Properties.Resources.loading,
+                BackgroundImageLayout = ImageLayout.Stretch
+            };
             mainPanel.Controls.Add(panelload);
             panelload.BringToFront();
         }
@@ -1159,7 +1165,7 @@ namespace SortImage
         // Handeler for the close button for the preview panel
         private void ClosePanelButton_Click(object sender, EventArgs e)
         {
-            panel3.Dispose();
+            panelinner.Dispose();
             Hide_Main(true);
             nextCount = 0;
             fileparth = null;
@@ -1167,24 +1173,25 @@ namespace SortImage
 
         private void PreviewBuild(Button clickedButton) {
             if (nextCount > 0) {
-                panel3.Dispose();
+                panelinner.Dispose();
             }
+            activePreviewButton = clickedButton;
 
-            panel3 = new TableLayoutPanel();
+            panelinner = new TableLayoutPanel();
             Loading();
 
             Hide_Main(false);
 
-            previewPanel = new PreviewLayer(mainPanel.Size, fileparth, clickedButton, nextCount);
+            previewPanel = new PreviewLayer(mainPanel.Size, fileparth, activePreviewButton, nextCount);
             previewPanel.ClosePanelButton.Text = "Close";
             previewPanel.ClosePanelButton.Click += new EventHandler(ClosePanelButton_Click);
             previewPanel.nextSetButton.Text = "More...";
             previewPanel.nextSetButton.Click += new EventHandler(button1_Click);
-            mainPanel.Controls.Add(previewPanel.panel4);
-            panel3 = previewPanel.panel4;
+            mainPanel.Controls.Add(previewPanel.mainpanel);
+            panelinner = previewPanel.mainpanel;
             panelload.Dispose();
-            panel3.Dock = DockStyle.Fill;
-            panel3.BringToFront();
+            panelinner.Dock = DockStyle.Fill;
+            panelinner.BringToFront();
             nextCount++;
         }
 
@@ -1193,7 +1200,7 @@ namespace SortImage
         // Loads the preview panel and creates the buttons for it
         private void button1_Click(object sender, EventArgs e)
         {
-            PreviewBuild(null);
+            PreviewBuild(activePreviewButton);
         }
 
         // Methord to handle the undo, that is moving a file back to where it came from
@@ -1307,26 +1314,33 @@ namespace SortImage
             newName.Text = "..." + fileNameCreator.fileNameBuilder(GetFilePath(), "", checkedTags, renameIteration)[0];
         }
 
-        // Creates the info tooltip for the main picture box
-        private void pictureBox_Info(object sender, EventArgs e)
+        private void pictureBox1_Info_update(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             try
             {
-                int h = pictureBox1.Size.Height;
-                int w = pictureBox1.Size.Width;
-                ImageInfo.ShowAlways = true;
-                int iw = pictureBox1.Image.Width;
-                int ih = pictureBox1.Image.Height;
-                int sw = splitContainer1.Panel1.Width; //Offset for the popup
-                ImageInfo.Show(iw + " : " + ih + "\n" + GetFilePath(), mainPanel, sw + (w / 2), (h / 2));
+                if (e.X != lastToolTipX || e.Y != lastToolTipY)
+                {
+                    ImageInfo.Show(currentToolTipText, mainPanel, splitContainer1.Panel1.Width + e.X + 25, e.Y + 10);
+                    lastToolTipX = e.X;
+                    lastToolTipY = e.Y;
+                }
             }
-            catch (NullReferenceException){}
+            catch (NullReferenceException) { }
+        }
+
+        // Creates the info tooltip for the main picture box
+        private void pictureBox_Info_create(object sender, EventArgs e)
+        {
+            int iw = pictureBox1.Image.Width;
+            int ih = pictureBox1.Image.Height;
+            currentToolTipText = iw + " : " + ih + "\n" + GetFilePath();
+            ImageInfo.Active = true;
         }
 
         // Will remove tooltip once mouse is removed from main image
-        private void pictureBox_Infor_remove(object sender, EventArgs e)
+        private void pictureBox_Info_remove(object sender, EventArgs e)
         {
-            ImageInfo.ShowAlways = false;
+            ImageInfo.Active = false;
         }
 
         // Handler for when a item in the tag list is selected or un-selected
@@ -1440,8 +1454,10 @@ namespace SortImage
             }
             catch (Exception ex)
             {
-                ErrorDialog exp = new ErrorDialog(ex, "ERROR:");
-                exp.StartPosition = FormStartPosition.CenterParent;
+                ErrorDialog exp = new ErrorDialog(ex, "ERROR:")
+                {
+                    StartPosition = FormStartPosition.CenterParent
+                };
                 if (exp.ShowDialog() == DialogResult.OK){}
             }
         }
@@ -1534,7 +1550,6 @@ namespace SortImage
                     files = new Dictionary<string, int>();
                     fmProgress = new ProcceingDialog2();
                     bwSortImageFolder.RunWorkerAsync();
-                   // bwSortImageFolder.
                     fmProgress.ShowDialog( this );
                     fmProgress = null;
                 }

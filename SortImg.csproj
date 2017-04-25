@@ -29,7 +29,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.0.2.0</ApplicationVersion>
+    <ApplicationVersion>2.0.4.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -211,19 +211,19 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -233,10 +233,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
-    <Content Include="Images\corrupt.jpg" />
-    <Content Include="Images\Loading.PNG" />
-    <Content Include="Images\thumberror.jpg" />
-    <Content Include="Images\X_32x32-32.png" />
+    <Content Include="Resources\corrupt.jpg" />
+    <Content Include="Resources\Loading.PNG" />
+    <Content Include="Resources\thumberror.jpg" />
+    <Content Include="buglist.txt" />
+    <Content Include="changelog.txt" />
+    <None Include="Resources\X_32x32-32.png" />
     <None Include="Resources\folder_new.png" />
     <None Include="Resources\bin.png" />
     <None Include="Resources\undo.png" />
@@ -247,14 +249,7 @@
     <None Include="Resources\remove.png" />
     <None Include="Resources\next.png" />
     <None Include="Resources\fill.png" />
-    <None Include="Resources\fill.bmp" />
     <Content Include="Resources\icon.png" />
-    <Content Include="Resources\ImageSortHelp.jpg" />
-    <Content Include="Images\button_cancel-64.png" />
-    <Content Include="Images\Folder.png" />
-    <Content Include="Images\My-Pictures.png" />
-    <Content Include="Images\Search.png" />
-    <Content Include="Images\undo-64.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

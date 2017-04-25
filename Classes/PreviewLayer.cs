@@ -8,77 +8,83 @@ namespace SortImage
 {
     public class PreviewLayer
     {
-        public Panel panel4;
+        public Panel mainpanel;
         public TableLayoutPanel layoutPanel;
         public Button ClosePanelButton;
         public string folder;
         public ArrayList filePaths;
-        public Button butt;
+        public Button callerButton;
         public Button nextSetButton;
-        public int prePage;
         public ThumbnailBuilder tb;
-        private FileNameBuilder fb;
+        private FileNameBuilder fileNameBuilder;
 
+        const string PREVIEWNAME = "dynaPictureBox";
         const int IMAGECOUNT = 18;
 
-        public PreviewLayer(Size s, string folderr, Button but, int preP)
+        public PreviewLayer(Size s, string incfolder, Button but, int page)
         {
-            folder = folderr;
-            buildLayer(s, but, preP);
-            addImages(s, 1);
+            folder = incfolder;
+            callerButton = but;
+            buildLayer(s);
+            addImages(s, true, page);
         }
          
-        public PreviewLayer(Size s, ArrayList files, Button but, int preP)
+        public PreviewLayer(Size s, ArrayList files, Button but, int page)
         {
             filePaths = files;
-            buildLayer(s, but, preP);
-            addImages(s, 0);
+            callerButton = but;
+
+            buildLayer(s);
+            addImages(s, false, page);
         }
 
-        public void buildLayer(Size s, Button but, int preP)
+        public void buildLayer(Size s)
         {
-            fb = new FileNameBuilder(false);
+            fileNameBuilder = new FileNameBuilder(false);
             tb = new ThumbnailBuilder();
-            butt = but;
-            prePage = preP;
-            layoutPanel = new TableLayoutPanel();
+
+            mainpanel = new Panel();
             ClosePanelButton = new Button();
+            layoutPanel = new TableLayoutPanel();
+
+            ClosePanelButton.Image = new Bitmap(global::SortImage.Properties.Resources.buttonCancel.GetThumbnailImage(ClosePanelButton.Size.Height, ClosePanelButton.Size.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero));
+            ClosePanelButton.ImageAlign = ContentAlignment.MiddleRight;
+            ClosePanelButton.Left = mainpanel.Width - ClosePanelButton.Width + 5;
+
             nextSetButton = new Button();
             nextSetButton.Text = "More...";
-            panel4 = new Panel();
-            this.panel4.Controls.Add(nextSetButton); // New
-            this.panel4.Controls.Add(ClosePanelButton);
-            this.panel4.Dock = DockStyle.Fill;
-            ClosePanelButton.Image = new Bitmap(global ::SortImage.Properties.Resources.buttonCancel.GetThumbnailImage(ClosePanelButton.Size.Height, ClosePanelButton.Size.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero));
-            ClosePanelButton.ImageAlign = ContentAlignment.MiddleRight;
+            nextSetButton.Left = 50;
             nextSetButton.Image = new Bitmap(global ::SortImage.Properties.Resources.next.GetThumbnailImage(nextSetButton.Size.Height, nextSetButton.Size.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero));
             nextSetButton.ImageAlign = ContentAlignment.MiddleRight;
-            this.panel4.Controls.Add(layoutPanel);
-            panel4.Size = s;
-            panel4.BackColor = Color.Silver;
-            this.layoutPanel.ColumnCount = 6;
-            this.layoutPanel.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
-            this.layoutPanel.Size = new Size(s.Width, s.Height - ClosePanelButton.Height);
-            this.layoutPanel.Location = new System.Drawing.Point(50, 50);
-            this.layoutPanel.Name = "layoutPanel";
-            this.layoutPanel.AutoScroll = true;
-            nextSetButton.Left = 50;
-            ClosePanelButton.Left = panel4.Width - ClosePanelButton.Width + 5;
+           
+            layoutPanel.ColumnCount = 6;
+            layoutPanel.GrowStyle = TableLayoutPanelGrowStyle.AddRows;
+            layoutPanel.Size = new Size(s.Width, s.Height - ClosePanelButton.Height);
+            layoutPanel.Location = new System.Drawing.Point(50, 50);
+            layoutPanel.Name = "layoutPanel";
+            layoutPanel.AutoScroll = true;
+
+            mainpanel.Size = s;
+            mainpanel.BackColor = Color.Silver;
+            mainpanel.Controls.Add(layoutPanel);
+            mainpanel.Dock = DockStyle.Fill;
+            mainpanel.Controls.Add(nextSetButton); // New
+            mainpanel.Controls.Add(ClosePanelButton);
         }
 
-        public void addImages(Size siz, int flag)
+        private void addImages(Size siz, bool initfolder, int page)
         {
             int i = 0;
             int loopCount = 0;
             PictureBox picbox;
-            if (flag == 1)
+            if (initfolder)
             {
-                filePaths = fb.ProcessDirectory(folder);
+                filePaths = fileNameBuilder.ProcessDirectory(folder);
             }
-            int loop = (prePage * IMAGECOUNT);
+            int skipstep = (page * IMAGECOUNT);
             foreach (string s in filePaths)
             {
-                if (loopCount < loop)
+                if (loopCount < skipstep)
                 {
                     loopCount++;
                 }
@@ -88,7 +94,7 @@ namespace SortImage
                     {
                         picbox = new PictureBox();
                         picbox.Size = new Size((int)(siz.Width * .15), (int)(siz.Width * .15));
-                        picbox.Name = "dynaPictureBox" + i;
+                        picbox.Name = PREVIEWNAME + (skipstep + i);
                         picbox.Click += new EventHandler(Picturebox_Click);
                         layoutPanel.Controls.Add(picbox);
                         SetImage(picbox, s);
@@ -136,12 +142,12 @@ namespace SortImage
 
         private void Picturebox_Click(object sender, EventArgs e)
         {
-            if (butt != null)
+            if (callerButton != null)
             {
                 PictureBox clickedButton = (PictureBox)sender; //get the button that was clicked
-                string index = clickedButton.Name.Substring("dynaPictureBox".Length);
+                string index = clickedButton.Name.Substring(PREVIEWNAME.Length);
                 string fileparth = (string)filePaths[Convert.ToInt16(index)];
-                SortImg.SetbuttonIm(butt, fileparth);
+                SortImg.SetbuttonIm(callerButton, fileparth);
                 MessageBox.Show("New image chosen for folder preview");
             }
         }

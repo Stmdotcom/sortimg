@@ -88,7 +88,7 @@ namespace SortImage
             }
             catch
             {
-                Console.WriteLine("Crap");
+                System.Diagnostics.Debug.WriteLine("Crap");
             }
         }
 

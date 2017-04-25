@@ -290,9 +290,9 @@ namespace SortImage
             }
             catch
             {
-                Console.WriteLine("Logger not started");
+                System.Diagnostics.Debug.WriteLine("Logger not started");
             }
-            Console.WriteLine("Closing");
+            System.Diagnostics.Debug.WriteLine("Closing");
         }
 
         private void Delete_Click(object sender, EventArgs e)
@@ -473,14 +473,14 @@ namespace SortImage
         {
             try
             {
-                string terr = GetFilePath();
+                string picpath = GetFilePath();
 
-                if (terr == "NULL")
+                if (picpath == "NULL")
                 {
                    // MessageBox.Show("No image to show");
                     pictureBox1.Image = global::SortImage.Properties.Resources.fill;
                 }
-                else if (!File.Exists(terr))
+                else if (!File.Exists(picpath))
                 {
                     MessageBox.Show("That image has been moved already!");
                     UpdatePreview(true, null, false);
@@ -489,21 +489,29 @@ namespace SortImage
                 else
                 {
 
-                    holder = Bitmap.FromFile(terr);
-                    if (Path.GetExtension(terr) == ".gif")
-                    {
-                        isgif = true;
-                    }
-                    else
-                    {
-                        isgif = false;
-                    }
+                    holder = Bitmap.FromFile(picpath);
+
+                    isgif = Path.GetExtension(picpath) == ".gif" ? true : false;
+
                     try
                     {
-                        name.Text = "...\\" + Path.GetFileName(terr);
+                        name.Text = "...\\" + Path.GetFileName(picpath);
                         newName.Text = "..." + fileNameCreator.fileNameBuilder(GetFilePath(), "", checkedTags, renameIteration)[0];
                     }
                     catch (InvalidOperationException) { }
+
+                    try
+                    {
+                        pictureBox1.Image = new Bitmap(holder);
+                        holder.Dispose();
+
+                        this.Invalidate();
+                    }
+                    catch (Exception ex)
+                    {
+                        pictureBox1.Image = global::SortImage.Properties.Resources.corrupt;
+                        logger.writeLogError("Issue setting picture", ex);
+                    }
                 }
             }
             catch (IOException e)
@@ -512,17 +520,8 @@ namespace SortImage
                 logger.writeLog("Picture Likely Corrupt", 0);
                 logger.writeConsoleError("Picture likely corrupt", e);
             }
-            try
-            {
-                pictureBox1.Image = new Bitmap(holder);
-                holder.Dispose();
 
-                this.Invalidate();
-            }
-            catch (Exception ex)
-            {
-                logger.writeLogError("Issue setting picture", ex);
-            }
+  
         }
 
         /// <summary>
@@ -531,7 +530,7 @@ namespace SortImage
         /// <returns>String containg file parth</returns>
         private string GetFilePath()
         {
-            if (currentImageFocus != "")
+            if (currentImageFocus != "" && currentImageFocus != null)
             {
                 allowMove = true;
                 return currentImageFocus;
@@ -1599,7 +1598,7 @@ namespace SortImage
         private void bwSortImageFolder_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             fmProgress.progressBar1.Value = e.ProgressPercentage;
-            Console.WriteLine("Running" + e.ProgressPercentage);
+            System.Diagnostics.Debug.WriteLine("Running" + e.ProgressPercentage);
             if (fmProgress.cancel)
             {
                bwSortImageFolder.CancelAsync();
@@ -1616,7 +1615,7 @@ namespace SortImage
         {
             if (fmProgress.cancel)
             {
-                Console.WriteLine("Done");
+                System.Diagnostics.Debug.WriteLine("Done");
                 if (fmProgress != null)
                 {
                     fmProgress.Hide();
@@ -1673,7 +1672,7 @@ namespace SortImage
                             }
                             else
                             {
-                                Console.WriteLine("File already moved");
+                                System.Diagnostics.Debug.WriteLine("File already moved");
                             }
                         }
                     }
@@ -1691,7 +1690,7 @@ namespace SortImage
                     finalFold();
 
                 }
-                Console.WriteLine("Done");
+                System.Diagnostics.Debug.WriteLine("Done");
                 if (fmProgress != null)
                 {
                     fmProgress.Hide();

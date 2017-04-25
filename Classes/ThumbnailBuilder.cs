@@ -20,20 +20,22 @@ namespace SortImage
             Bitmap img = (Bitmap)Bitmap.FromStream(fs, false, false);
             try
             {
-                byte[] imageBytes = img.GetPropertyItem(THUMBNAIL_DATA).Value;
-                if (img.GetPropertyItem(THUMBNAIL_DATA).Value != null)
+                if (Array.IndexOf(img.PropertyIdList, THUMBNAIL_DATA) > 0)
                 {
+                    byte[] imageBytes = img.GetPropertyItem(THUMBNAIL_DATA).Value;
                     fs.Close();
                     img.Dispose();
                     using (MemoryStream stream = new MemoryStream(imageBytes.Length))
                     {
                         stream.Write(imageBytes, 0, imageBytes.Length);
-                        Console.Out.WriteLine("Exif thumb");
+                        System.Diagnostics.Debug.WriteLine("Exif thumb");
                         return Image.FromStream(stream);
                     }
                 }
             }
-            catch{}
+            catch{
+                System.Diagnostics.Debug.WriteLine("Thumb build error");
+            }
             Int32 ImgW = img.Width;
             Int32 ImgH = img.Height;
             Int32 imgHeight = ScaleImage(ImgW, ImgH);
@@ -44,11 +46,12 @@ namespace SortImage
                 Image pp = img.GetThumbnailImage(100, imgHeight, thumbAbort, IntPtr.Zero);
                 fs.Close();
                 img.Dispose();
-                Console.Out.WriteLine("System created thumb");
+                System.Diagnostics.Debug.WriteLine("System created thumb");
                 return pp;
             }
             catch (Exception) //Custom thumbnail, set at high quality.
             {
+                System.Diagnostics.Debug.WriteLine("Thumb build error 2");
                 return customThumb(img, 100, 100);
             }
             finally
@@ -83,7 +86,7 @@ namespace SortImage
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
                 graphics.DrawImage(img, 0, 0, x, y);
             }
-            Console.Out.WriteLine("Custom created thumb");
+            System.Diagnostics.Debug.WriteLine("Custom created thumb");
             return thumb;
         }
     }

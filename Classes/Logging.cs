@@ -51,7 +51,7 @@ namespace SortImage
                         loop = false;
                     }
                 }
-                Console.WriteLine("Log file created at " + logfile);
+                System.Diagnostics.Debug.WriteLine("Log file created at " + logfile);
                 writ.WriteLine("---LOG START---");
                 writ.WriteLine("Starting log at: " + DateTime.Now.ToShortTimeString());
                 writ.WriteLine("---");
@@ -118,13 +118,13 @@ namespace SortImage
 
         public void writeConsole(string text)
         {
-            Console.WriteLine(text);
+            System.Diagnostics.Debug.WriteLine(text);
         }
 
         public void writeConsoleError(string text, Exception exception)
         {
-            Console.WriteLine("ERROR: " + text);
-            Console.WriteLine("EXCEPTION: " + exception);
+            System.Diagnostics.Debug.WriteLine("ERROR: " + text);
+            System.Diagnostics.Debug.WriteLine("EXCEPTION: " + exception);
             lasterror = "ERROR: " + text + "\n" + "EXCEPTION: " + exception;
             errorcount++;
         }

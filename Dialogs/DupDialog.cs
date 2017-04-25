@@ -34,7 +34,6 @@ namespace SortImage
          
             fname = filename;
             size = ll.ToString();
-          //  renametog = renameTog;
             try
             {
                 try
@@ -58,7 +57,7 @@ namespace SortImage
             if (noRename == true)
             {
                 dupDialogRename.Enabled = false;
-                    dupDialogRename.Visible = false;
+                dupDialogRename.Visible = false;
             }
 
         }

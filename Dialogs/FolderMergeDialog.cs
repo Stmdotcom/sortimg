@@ -94,7 +94,7 @@ namespace SortImage
                 {
                     if (selectedMatcher == 1)
                     {
-                        Console.WriteLine("MD5");
+                        System.Diagnostics.Debug.WriteLine("MD5");
                         string size1 = CalcMd5Hash(sourceDirandFile);
                         string size2 = CalcMd5Hash(destcheck);
                         if (size1 == size2)
@@ -104,7 +104,7 @@ namespace SortImage
                     }
                     else
                     {
-                        Console.WriteLine("Size");
+                        System.Diagnostics.Debug.WriteLine("Size");
                         long size1 = CalcSize(sourceDirandFile);
                         long size2 = CalcSize(destcheck);
                         if (size1 == size2)
@@ -116,7 +116,7 @@ namespace SortImage
                     {
                         copys++;
                         progressBar1.Increment(1);
-                        Console.WriteLine("File already exists " + copys + " out of " + size);                     
+                        System.Diagnostics.Debug.WriteLine("File already exists " + copys + " out of " + size);                     
                     }
                     else // Files are diffrent sizes but share filename, move and rename file.
                     {
@@ -136,8 +136,8 @@ namespace SortImage
                             {
                                 copys++;
                                 progressBar1.Increment(1);
-                                Console.WriteLine("File moved rename " + copys + " out of " + size);
-                                Console.WriteLine(sourceDirandFile + " TO " + newdest);
+                                System.Diagnostics.Debug.WriteLine("File moved rename " + copys + " out of " + size);
+                                System.Diagnostics.Debug.WriteLine(sourceDirandFile + " TO " + newdest);
                                 System.IO.File.Move(sourceDirandFile, newdest);
                                 i = 1;
                             }
@@ -149,14 +149,14 @@ namespace SortImage
                 {
                     copys++;
                     progressBar1.Increment(1);
-                    Console.WriteLine("File moved " + copys + " out of " + size);
-                    Console.WriteLine(sourceDirandFile + " TO " + destcheck);
+                    System.Diagnostics.Debug.WriteLine("File moved " + copys + " out of " + size);
+                    System.Diagnostics.Debug.WriteLine(sourceDirandFile + " TO " + destcheck);
                     System.IO.File.Move(sourceDirandFile, destcheck);
                 }
             }
             catch
             {
-                Console.WriteLine("Crap");
+                System.Diagnostics.Debug.WriteLine("Crap");
             }
         }
 

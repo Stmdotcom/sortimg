@@ -112,14 +112,14 @@ namespace SortImage
             string checksum = IsUnique(filename);
             if (checksum != "error")
             {
-                Console.WriteLine(filename + ": In not in list, adding " + checksum);
+                System.Diagnostics.Debug.WriteLine(filename + ": In not in list, adding " + checksum);
                 fingerprint_feild.Add(checksum);
                 filename_feild.Add(newfilename);
                 return true;
             }
             else
             {
-                Console.WriteLine(filename + ": Is a duplicate");
+                System.Diagnostics.Debug.WriteLine(filename + ": Is a duplicate");
                 return false;
             }
         }
@@ -138,7 +138,7 @@ namespace SortImage
             }
             catch (Exception)
             {
-                Console.WriteLine("Unable to add nulls");
+                System.Diagnostics.Debug.WriteLine("Unable to add nulls");
             }
         }
 
@@ -154,7 +154,7 @@ namespace SortImage
             }
             catch (Exception)
             {
-                Console.WriteLine("Unable to remove finger print");
+                System.Diagnostics.Debug.WriteLine("Unable to remove finger print");
             }
         }
 
@@ -206,13 +206,13 @@ namespace SortImage
                 checksum = IsUnique(file);
                 if (checksum != "error")
                 {
-                    Console.WriteLine(file + ": In not in list, adding " + checksum);
+                    System.Diagnostics.Debug.WriteLine(file + ": In not in list, adding " + checksum);
                     fingerprint_feild.Add(checksum);
                     filename_feild.Add(file);
                 }
                 else
                 {
-                    Console.WriteLine(file + ": Is a duplicate");
+                    System.Diagnostics.Debug.WriteLine(file + ": Is a duplicate");
                     try
                     {
                         if (files.ContainsKey(lastmatch))
@@ -229,7 +229,7 @@ namespace SortImage
                     }
                     catch (Exception e)
                     {
-                        Console.Out.WriteLine(e);
+                        System.Diagnostics.Debug.WriteLine(e);
                     }
                 }
             }
@@ -266,7 +266,7 @@ namespace SortImage
                 }
                 else
                 {
-                    Console.WriteLine("ERROR PROCCESSING FILE.." + file);
+                    System.Diagnostics.Debug.WriteLine("ERROR PROCCESSING FILE.." + file);
                 }
             }
         }
@@ -315,7 +315,7 @@ namespace SortImage
             {
                 if ((temp == fingerprintval) && temp != "NA" && done != 1)
                 {
-                    Console.Out.WriteLine("Found matching MD5");
+                    System.Diagnostics.Debug.WriteLine("Found matching MD5");
                     if (doOnce == 1)
                     {
                         BuildCompare(filename);
@@ -324,7 +324,7 @@ namespace SortImage
                     if (CheckDuplicates((string)filename_feild[tempIter]) == 1)
                     {
                         matchFound = 1;
-                        Console.Out.WriteLine("Found matching image");
+                        System.Diagnostics.Debug.WriteLine("Found matching image");
                         done = 1;
                     }
                 }
@@ -400,7 +400,7 @@ namespace SortImage
                     }
                 }
             }
-            Console.WriteLine(histogram.Count);
+            System.Diagnostics.Debug.WriteLine(histogram.Count);
             int tr = 0;
             Dictionary<double, double> normhist = new Dictionary<double, double>();
             double max = 0;
@@ -513,7 +513,7 @@ namespace SortImage
             }
             catch (Exception e)
             {
-                Console.WriteLine("ERROR:" + e);
+                System.Diagnostics.Debug.WriteLine("ERROR:" + e);
                 return 0;
             }
         }
@@ -529,7 +529,7 @@ namespace SortImage
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
                 graphics.DrawImage(img, 0, 0, x, y);
             }
-            Console.Out.WriteLine("Custom created thumb");
+            System.Diagnostics.Debug.WriteLine("Custom created thumb");
             return thumb;
         }
     }

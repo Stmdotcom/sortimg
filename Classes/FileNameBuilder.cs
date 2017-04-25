@@ -54,19 +54,19 @@ namespace SortImage
                 // Determine whether the directory exists.
                 if (Directory.Exists(path))
                 {
-                    Console.WriteLine("That path exists already.");
+                    System.Diagnostics.Debug.WriteLine("That path exists already.");
                 }
                 else
                 {
                     // Try to create the directory.
                     DirectoryInfo di = Directory.CreateDirectory(path);
-                    Console.WriteLine("The directory was created successfully at {0}.", Directory.GetCreationTime(path));
+                    System.Diagnostics.Debug.WriteLine("The directory was created successfully at " + Directory.GetCreationTime(path));
                 }
                 return path;
             }
             catch (Exception e)
             {
-                Console.WriteLine("The process failed: {0}", e.ToString());
+                System.Diagnostics.Debug.WriteLine("The process failed: {0}", e.ToString());
                 return null;
             }
             finally { }

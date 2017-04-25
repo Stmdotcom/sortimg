@@ -87,7 +87,9 @@ namespace SortImage
             {
                 img = Image.FromFile(fileName);
             }
-            catch {}
+            catch {
+                System.Diagnostics.Debug.WriteLine("Thumb cntr error");
+            }
 
             if (img != null)
             {
@@ -185,7 +187,9 @@ namespace SortImage
                 try {
                     img = Image.FromFile(file);
                 }
-                catch {}
+                catch {
+                    System.Diagnostics.Debug.WriteLine("Thumb cntr error 2");
+                }
 
                 if (img != null) {
                     this.OnAdd(this, new ThumbnailControllerEventArgs(file));
@@ -232,7 +236,9 @@ namespace SortImage
                 try {
                     img = Image.FromFile(file);
                 }
-                catch{}
+                catch{
+                    System.Diagnostics.Debug.WriteLine("Thumb cntr error 3");
+                }
 
                 if (img != null) {
                     this.OnAdd(this, new ThumbnailControllerEventArgs(file));

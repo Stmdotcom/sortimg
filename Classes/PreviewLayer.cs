@@ -125,13 +125,13 @@ namespace SortImage
                 catch (Exception e)
                 {
                    picbox.Image = global::SortImage.Properties.Resources.thumberror;
-                    Console.WriteLine("Corrupt on transpanel:   " + e);
+                    System.Diagnostics.Debug.WriteLine("Corrupt on transpanel:   " + e);
                 }
                 picbox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Can't open file stream to load image for transpanel:   " + ex);
+                System.Diagnostics.Debug.WriteLine("Can't open file stream to load image for transpanel:   " + ex);
             }
         }
 

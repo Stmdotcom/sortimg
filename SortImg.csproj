@@ -241,6 +241,7 @@
     <Content Include="Resources\thumberror.jpg" />
     <Content Include="buglist.txt" />
     <Content Include="changelog.txt" />
+    <Content Include="features.txt" />
     <None Include="Resources\X_32x32-32.png" />
     <None Include="Resources\folder_new.png" />
     <None Include="Resources\bin.png" />

@@ -180,7 +180,7 @@ namespace SortImage
             string checksum = "";
             progressmax = FileArray.Count;
             progressmax = (100 / progressmax);
-            int magic = 0;
+            int dictionaryKey = 0;
             foreach (string file in FileArray)
             {
                 progress = (int)(progressmax * cur);
@@ -222,9 +222,9 @@ namespace SortImage
                         }
                         else
                         {
-                            files.Add(file, magic);
-                            files.Add(lastmatch, magic);
-                            magic++;
+                            files.Add(file, dictionaryKey);
+                            files.Add(lastmatch, dictionaryKey);
+                            dictionaryKey++;
                         }
                     }
                     catch (Exception e)

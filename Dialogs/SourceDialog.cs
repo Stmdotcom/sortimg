@@ -15,24 +15,18 @@ namespace SortImage
         private int foldercount = 0;
 
         private SortImgSettings settings;
-       // private IniFile INI;
 
         private string[] workingFolders = new string[64]; // 0-31 are source folders, 32 is dup folder. 64 for compatablity with copying
 
         public SourceDialog(SortImgSettings set)
         {
             string apppath = Application.StartupPath;
-           // INI = new IniFile(apppath + "\\Settings.ini");
             InitializeComponent();
             buildtips();
-           // buildINI();
-            //lastDir = settings.LastDirectory;
-          //  logval = settings.LogValue;
             settings = set;
             logval = settings.LogValue;
             lastDir = settings.LastDirectory;
         }
-
 
         private void buildtips()
         {
@@ -46,32 +40,6 @@ namespace SortImage
             toolTip1.SetToolTip(this.help3, "Must pick the main folders that are to be sorted");
             toolTip1.SetToolTip(this.help4, "Must pick a folder to handle duplicates and marked deletion if on 'mark' delete mode");
         }
-        /*
-        private void buildINI()
-        {
-            string tmpString = INI.IniReadValue("directories", "lastimage");
-            if (tmpString != "null")
-            {
-                try
-                {
-                    lastDir = Path.GetFullPath(tmpString);
-                }
-                catch (IOException)
-                {
-                    lastDir = null;
-                }
-            }
-
-            if (INI.IniReadValue("options", "Log") == "true")
-            {
-                logval = true;
-            }
-            else
-            {
-                logval = false;
-            }
-        }
-         */
 
         private void pickImageFolder_Click(object sender, EventArgs e)
         {
@@ -86,12 +54,10 @@ namespace SortImage
                     if (logval == true)
                     {
                         settings.LogValue = true;
-                        //INI.IniWriteValue("options", "Log", "true");
                     }
                     else
                     {
                         settings.LogValue = false;
-                       // INI.IniWriteValue("options", "Log", "false");
                     }
                   
                 }
@@ -129,10 +95,7 @@ namespace SortImage
                     inputFolderTextBox.Lines = workingFolders;
                     foldercount++;
                     settings.LastDirectory = fold;
-                  //  INI.IniWriteValue("directories", "lastimage", fold);
                 }
-
-                //MessageBox.Show(fold);
             }
         }
 

@@ -209,6 +209,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -225,15 +227,14 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Classes\PreviewLayer.cs" />
+    <None Include="TODO.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
     <Content Include="Resources\corrupt.jpg" />
     <Content Include="Resources\Loading.PNG" />
     <Content Include="Resources\thumberror.jpg" />
-    <Content Include="buglist.txt" />
-    <Content Include="changelog.txt" />
-    <Content Include="features.txt" />
+    <None Include="README.md" />
     <None Include="Resources\X_32x32-32.png" />
     <None Include="Resources\folder_new.png" />
     <None Include="Resources\bin.png" />

@@ -42,6 +42,7 @@ namespace SortImage
         private string currentToolTipText = "N/A";
         private int lastToolTipX;
         private int lastToolTipY;
+        private string lastMoveFolder = "";
 
         private Point selectionStart;
         private Point selectionEnd;
@@ -342,7 +343,7 @@ namespace SortImage
         private void FoldAdd_Click(object sender, EventArgs e)
         {
             if (curfold < 63) {
-                Pick(curfold);
+                AddNewFolder(curfold);
             } else {
                 MessageBox.Show("Sorry, can't add more folders.");
             }
@@ -688,8 +689,12 @@ namespace SortImage
         /// Pick new folder
         /// </summary>
         /// <param name="num">Folder number</param>
-        private void Pick(int num)
+        private void AddNewFolder(int num)
         {
+            if (lastMoveFolder != "") {
+                folderBrowserDialog1.SelectedPath = lastMoveFolder;
+            }
+
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
                 if (Directory.Exists(folderBrowserDialog1.SelectedPath)) {
                     if (Checkfolder(workingFolders, folderBrowserDialog1.SelectedPath) == false) {
@@ -697,6 +702,7 @@ namespace SortImage
                     } else {
                         try {
                             workingFolders[num] = folderBrowserDialog1.SelectedPath;
+                            lastMoveFolder = workingFolders[num];
                             fileNameCreator.duplicateFolder = workingFolders[dupFold];
                             buttonPictureToggle[num] = 0;
                             GenerateControl(num);

@@ -17,9 +17,8 @@ namespace SortImage
         string size;
         string dupSelect;
         private Image holder;
-        //private bool renametog = true;
 
-        public DupDialog(string filename, string dest, long ll, bool noRename, string text)
+        public DupDialog(string filename, string dest, long size, bool noRename, string text)
         {
             InitializeComponent();
             if (text == null || text == "")
@@ -33,7 +32,7 @@ namespace SortImage
             desta = dest;
          
             fname = filename;
-            size = ll.ToString();
+            this.size = size.ToString();
             try
             {
                 try
@@ -42,12 +41,11 @@ namespace SortImage
                 }
                 catch
                 {
-                    //pictureBox1.Image = new Bitmap("corrupt.jpg");
-                    pictureBox1.Image  = global::SortImage.Properties.Resources.corrupt;
+                    pictureBox1.Image  = Properties.Resources.corrupt;
                 }
                 pictureBox1.Image = new Bitmap(holder);
                 holder.Dispose();
-                pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 this.Invalidate();
             }
             catch (Exception)
@@ -61,7 +59,6 @@ namespace SortImage
             }
 
         }
-
 
         public string GetString()
         {
@@ -84,13 +81,6 @@ namespace SortImage
             dupSelect = "RENAME";
         }
 
-        /*
-        private void dupDialogCancel_Click(object sender, EventArgs e)
-        {
-
-        }
-         */
-
         private void dupDialogDupFold_Click(object sender, EventArgs e)
         {
             dupSelect = "DUP";
@@ -98,27 +88,20 @@ namespace SortImage
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-
-            bool isaGif = false;
-            if (Path.GetExtension(desta) == ".gif")
-            {
-                isaGif = true;
-            }
-            GifDialog a = new GifDialog(desta, isaGif);
-            a.StartPosition = FormStartPosition.CenterParent;
-            a.MaximumSize = new Size(300, 300);
+            PreviewImageDialog previewImageDialog = new PreviewImageDialog(desta, Path.GetExtension(desta) == ".gif");
+            previewImageDialog.StartPosition = FormStartPosition.CenterParent;
+            previewImageDialog.MaximumSize = new Size(300, 300);
             try
             {
-                if (a.ShowDialog() == DialogResult.OK)
+                if (previewImageDialog.ShowDialog() == DialogResult.OK)
                 {
-                    a.Dispose();
+                    previewImageDialog.Dispose();
                 }
             }
             catch (Exception)
             {
-                a.Dispose();
-              //  logger.writeConsoleError("Gif animation error", ex);
-                MessageBox.Show("Gif closed due to GDI+ error in playback \n Gif may be corrupt");
+                previewImageDialog.Dispose();
+                MessageBox.Show("Image closed due to GDI+ error\n Image may be corrupt");
             }
         }
     }

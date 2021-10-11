@@ -65,10 +65,5 @@ namespace SortImage
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool IsWow64Process(IntPtr hProcess, out bool wow64Process);
-
-
-
-
-
     }
 }

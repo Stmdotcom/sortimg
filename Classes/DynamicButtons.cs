@@ -26,6 +26,7 @@ namespace SortImage
             dynamicPicture.ForeColor = Color.White;
             dynamicPicture.Text = fileName;
             dynamicPicture.TextAlign = ContentAlignment.TopRight;
+
             return dynamicPicture;
         }
 
@@ -50,10 +51,11 @@ namespace SortImage
                 alternate = 1;
             }
             dynamicButton.Text = "Move";       
-            dynamicButton.BackgroundImage = global::SortImage.Properties.Resources.add;
+            dynamicButton.BackgroundImage = Properties.Resources.add;
             dynamicButton.BackgroundImageLayout = ImageLayout.Stretch;
             dynamicButton.BackColor = Color.Transparent;
             dynamicButton.Font = new Font(FontFamily.GenericSansSerif, 12, FontStyle.Bold);
+
             return dynamicButton;
         }
     }

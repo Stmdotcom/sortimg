@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace SortImage
 {
-    public partial class ProcceingDialog : Form
+    public partial class ProcessingDialog : Form
     {
         //private int max = 1;
         public bool cancel = false;
-        public ProcceingDialog()
+        public ProcessingDialog()
         {
             InitializeComponent();
         }
@@ -34,15 +34,12 @@ namespace SortImage
             {
                 // change your bar
                 this.progressBar1.Value = barValue;
-                    if(this.progressBar1.Maximum == barValue)
+                if(this.progressBar1.Maximum == barValue)
                 {
                     this.Close();
                 }
             }
-
         }
-
-
 
         private delegate void setProgressMaxCallback(int barValue);
         public void SetProgressMax(int barValue)
@@ -57,9 +54,6 @@ namespace SortImage
                 this.progressBar1.Maximum = barValue;
             
             }
-
-            
-
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)

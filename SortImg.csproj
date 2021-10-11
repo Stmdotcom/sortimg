@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ImgUtils.cs" />
     <Compile Include="Classes\Utils.cs" />
     <Compile Include="Classes\Utils64.cs" />
     <Compile Include="Classes\DynamicButtons.cs" />
@@ -107,12 +108,6 @@
     <Compile Include="Dialogs\BmpToPngDialog.designer.cs">
       <DependentUpon>BmpToPngDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\ProcceingDialog2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\ProcceingDialog2.Designer.cs">
-      <DependentUpon>ProcceingDialog2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\DeleteDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,17 +133,17 @@
     <Compile Include="Dialogs\FolderMergeDialog.designer.cs">
       <DependentUpon>FolderMergeDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\ProcceingDialog.cs">
+    <Compile Include="Dialogs\ProcessingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\ProcceingDialog.Designer.cs">
-      <DependentUpon>ProcceingDialog.cs</DependentUpon>
+    <Compile Include="Dialogs\ProcessingDialog.Designer.cs">
+      <DependentUpon>ProcessingDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\GifDialog.cs">
+    <Compile Include="Dialogs\PreviewImageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\GifDialog.Designer.cs">
-      <DependentUpon>GifDialog.cs</DependentUpon>
+    <Compile Include="Dialogs\PreviewImageDialog.Designer.cs">
+      <DependentUpon>PreviewImageDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\SortDialog.cs">
       <SubType>Form</SubType>
@@ -182,9 +177,6 @@
     <EmbeddedResource Include="Dialogs\BmpToPngDialog.resx">
       <DependentUpon>BmpToPngDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\ProcceingDialog2.resx">
-      <DependentUpon>ProcceingDialog2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\DeleteDialog.resx">
       <DependentUpon>DeleteDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -194,14 +186,14 @@
     <EmbeddedResource Include="Dialogs\ErrorDialog.resx">
       <DependentUpon>ErrorDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\GifDialog.resx">
-      <DependentUpon>GifDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Dialogs\PreviewImageDialog.resx">
+      <DependentUpon>PreviewImageDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\FolderMergeDialog.resx">
       <DependentUpon>FolderMergeDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\ProcceingDialog.resx">
-      <DependentUpon>ProcceingDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Dialogs\ProcessingDialog.resx">
+      <DependentUpon>ProcessingDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\SortDialog.resx">
       <DependentUpon>SortDialog.cs</DependentUpon>

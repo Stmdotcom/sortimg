@@ -1,6 +1,6 @@
 ﻿namespace SortImage
 {
-    partial class GifDialog
+    partial class PreviewImageDialog
     {
         /// <summary>
         /// Required designer variable.

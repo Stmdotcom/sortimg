@@ -27,8 +27,6 @@ namespace SortImage
             apppath = ap;
             logger = log;
             INI = new IniFile(apppath + "\\Settings.ini");
-
-
         }
 
         public List<string> GetKeyNames()
@@ -40,12 +38,10 @@ namespace SortImage
             return keyBinds;
         }
 
-
         public void SaveKey(string keyname ,string keybind)
         {
               INI.IniWriteValue("keybindings", keyname, keybind);
         }
-
 
         public string LastDirectory
         {

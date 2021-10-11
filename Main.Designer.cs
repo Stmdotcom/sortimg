@@ -117,7 +117,7 @@ namespace SortImage
             this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
             this.resetToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.resetToolStripMenuItem.Text = "Reset";
-            this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
+            this.resetToolStripMenuItem.Click += new System.EventHandler(this.ResetToolStripMenuItem_Click);
             // 
             // configToolStripMenuItem
             // 
@@ -131,7 +131,7 @@ namespace SortImage
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -187,14 +187,14 @@ namespace SortImage
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
             this.helpToolStripMenuItem1.Size = new System.Drawing.Size(155, 22);
             this.helpToolStripMenuItem1.Text = "Help";
-            this.helpToolStripMenuItem1.Click += new System.EventHandler(this.helpToolStripMenuItem1_Click);
+            this.helpToolStripMenuItem1.Click += new System.EventHandler(this.HelpToolStripMenuItem1_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click_1);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click_1);
             // 
             // showLastErrorToolStripMenuItem
             // 
@@ -287,7 +287,7 @@ namespace SortImage
             this.trackBarSize.Size = new System.Drawing.Size(214, 45);
             this.trackBarSize.TabIndex = 5;
             this.trackBarSize.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.trackBarSize.ValueChanged += new System.EventHandler(this.trackBarSize_ValueChanged);
+            this.trackBarSize.ValueChanged += new System.EventHandler(this.TrackBarSize_ValueChanged);
             // 
             // textBox7
             // 
@@ -338,7 +338,7 @@ namespace SortImage
             this.addFolders.Size = new System.Drawing.Size(41, 34);
             this.addFolders.TabIndex = 39;
             this.addFolders.UseVisualStyleBackColor = true;
-            this.addFolders.Click += new System.EventHandler(this.addFolders_Click);
+            this.addFolders.Click += new System.EventHandler(this.AddFolders_Click);
             // 
             // splitContainer2
             // 
@@ -507,7 +507,7 @@ namespace SortImage
             this.toDupButton.Text = "To Dup";
             this.toDupButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toDupButton.UseVisualStyleBackColor = true;
-            this.toDupButton.Click += new System.EventHandler(this.toDupButton_Click);
+            this.toDupButton.Click += new System.EventHandler(this.ToDupButton_Click);
             // 
             // Undo
             // 
@@ -542,7 +542,7 @@ namespace SortImage
             this.foldAdd.Text = " Add Folder";
             this.foldAdd.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.foldAdd.UseVisualStyleBackColor = false;
-            this.foldAdd.Click += new System.EventHandler(this.foldAdd_Click);
+            this.foldAdd.Click += new System.EventHandler(this.FoldAdd_Click);
             // 
             // Delete
             // 
@@ -564,7 +564,7 @@ namespace SortImage
             // timer1
             // 
             this.timer1.Interval = 500;
-            this.timer1.Tick += new System.EventHandler(this.flashBut);
+            this.timer1.Tick += new System.EventHandler(this.flashButtonOff);
             // 
             // bwSortImageFolder
             // 

@@ -2,6 +2,7 @@
 - Cleanup; Do a full basic cleanup to correct obvious issues
 - Should auto create/select duplicate dir in first selected folder (add setting for folder name, only create if menus are confirmed) Just auto do and make the choice here a sub options view on the page
 - Logging should be enabled in settings
-- Sort type for images should be a radio button on the folder setup dialog (Then can remove dialog)
-- Add auto matching setting to the folder add dialog
+- Sort type for images should be a radio button on the folder setup dialog (Then can remove dialog togeather with change above)
+- Add auto matching setting to the folder add dialog (?)
 - Allow setting for how many images are loaded at once in preview
+- Selected picture logic is too complex, should only be base off images in `selectedImageViewers` the first image should ALWAYS be one shown. Can simplify logic around `FixActiveSelection` and `SetPicture`

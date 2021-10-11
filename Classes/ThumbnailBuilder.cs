@@ -42,7 +42,7 @@ namespace SortImage
             } catch (Exception) //Custom thumbnail, set at high quality.
               {
                 System.Diagnostics.Debug.WriteLine("Thumb build error 2");
-                return customThumb(img, 100, 100);
+                return CustomThumb(img, 100, 100);
             } finally {
                 fs.Close();
                 img.Dispose();
@@ -63,7 +63,7 @@ namespace SortImage
             return imgHeight;
         }
 
-        public Bitmap customThumb(Bitmap img, int x, int y)
+        public Bitmap CustomThumb(Bitmap img, int x, int y)
         {
             Bitmap thumb = new Bitmap(x, y);
             using (Graphics graphics = Graphics.FromImage(thumb)) {

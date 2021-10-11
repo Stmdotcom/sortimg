@@ -100,6 +100,13 @@ namespace SortImage
                     selectedImageViewers.Add(c);
                 }
             }
+
+            if (selectedImageViewers.Count > 0) {
+                activeImageViewer = selectedImageViewers[0];
+                currentImageFocus = activeImageViewer.ImageLocation;
+                SetPicture();
+            }
+
             FixActiveSelection();
         }
 
@@ -150,12 +157,18 @@ namespace SortImage
         private void FixActiveSelection()
         {
             foreach (ImageViewer item in flowLayoutPanelMain.Controls) {
-                if (selectedImageViewers.Contains(item)) {
-                    item.IsActive = true;
-                } else if (activeImageViewer == item) {
-                    item.IsActive = true;
+                if (selectedImageViewers.Count > 0) {
+                    if (selectedImageViewers.Contains(item)) {
+                        item.IsActive = true;
+                    } else {
+                        item.IsActive = false;
+                    }
                 } else {
-                    item.IsActive = false;
+                    if (activeImageViewer == item) {
+                        item.IsActive = true;
+                    } else {
+                        item.IsActive = false;
+                    }
                 }
             }
         }
@@ -635,7 +648,6 @@ namespace SortImage
             } else if (incdec == 3) { }//Do nothing
             textBox7.Text = Convert.ToString(progress);
         }
-
 
         /// <summary>
         /// This is the main methord called via buttons to copy file. Handles end of file list special case

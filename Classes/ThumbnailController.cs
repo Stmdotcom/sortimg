@@ -102,8 +102,6 @@ namespace SortImage
 
         public void LoadFolder(string folderPath)
         {
-           
-           // string[] files = Directory.GetFiles(folderPath);
             List<string> files = fnb.ProcessDirectoryList(folderPath);
 
             if (sortval == "SIZE")

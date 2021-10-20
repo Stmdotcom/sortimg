@@ -1381,8 +1381,8 @@ namespace SortImage
                 List<long> lastsize = new List<long>();
                 if (files.Count > 1) {
                     var sortedfiles = (from entry in files orderby entry.Value ascending select entry);
-                    newpath = fileNameCreator.createDirctory(bwFold + "\\VisualDups");
-                    newpath2 = fileNameCreator.createDirctory(bwFold + "\\Duplicates");
+                    newpath = fileNameCreator.createDirectory(bwFold + "\\VisualDups");
+                    newpath2 = fileNameCreator.createDirectory(bwFold + "\\Duplicates");
                     if (newpath != null) {
                         foreach (KeyValuePair<string, int> file in sortedfiles) {
                             if (File.Exists(file.Key)) // Duplicate file name check. This is a basic 1 to 1 file check

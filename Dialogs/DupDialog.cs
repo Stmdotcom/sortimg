@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 
 namespace SortImage
 {
@@ -21,39 +16,29 @@ namespace SortImage
         public DupDialog(string filename, string dest, long size, bool noRename, string text)
         {
             InitializeComponent();
-            if (text == null || text == "")
-            {
+            if (text == null || text == "") {
                 label1.Text = "No text passed";
-            }
-            else
-            {
+            } else {
                 label1.Text = text;
-            }   
+            }
             desta = dest;
-         
+
             fname = filename;
             this.size = size.ToString();
-            try
-            {
-                try
-                {
-                    holder = Bitmap.FromFile(dest);
-                }
-                catch
-                {
-                    pictureBox1.Image  = Properties.Resources.corrupt;
+            try {
+                try {
+                    holder = Image.FromFile(dest);
+                } catch {
+                    pictureBox1.Image = Properties.Resources.corrupt;
                 }
                 pictureBox1.Image = new Bitmap(holder);
                 holder.Dispose();
                 pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 this.Invalidate();
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
             }
 
-            if (noRename == true)
-            {
+            if (noRename == true) {
                 dupDialogRename.Enabled = false;
                 dupDialogRename.Visible = false;
             }
@@ -91,15 +76,11 @@ namespace SortImage
             PreviewImageDialog previewImageDialog = new PreviewImageDialog(desta, Path.GetExtension(desta) == ".gif");
             previewImageDialog.StartPosition = FormStartPosition.CenterParent;
             previewImageDialog.MaximumSize = new Size(300, 300);
-            try
-            {
-                if (previewImageDialog.ShowDialog() == DialogResult.OK)
-                {
+            try {
+                if (previewImageDialog.ShowDialog() == DialogResult.OK) {
                     previewImageDialog.Dispose();
                 }
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 previewImageDialog.Dispose();
                 MessageBox.Show("Image closed due to GDI+ error\n Image may be corrupt");
             }

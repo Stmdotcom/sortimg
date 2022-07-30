@@ -145,12 +145,6 @@
     <Compile Include="Dialogs\PreviewImageDialog.Designer.cs">
       <DependentUpon>PreviewImageDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\SortDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\SortDialog.Designer.cs">
-      <DependentUpon>SortDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\SourceDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -194,9 +188,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\ProcessingDialog.resx">
       <DependentUpon>ProcessingDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\SortDialog.resx">
-      <DependentUpon>SortDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\SourceDialog.resx">
       <DependentUpon>SourceDialog.cs</DependentUpon>

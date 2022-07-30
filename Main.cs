@@ -16,6 +16,7 @@ namespace SortImage
     {
         // Constants
         const int dupFold = 32;
+        const int toolTipRefreshPx = 25;
 
         //Variables used throughout the program
         //TODO Make workingFolders/buttonPictureToggle an array of objects/classes
@@ -28,7 +29,6 @@ namespace SortImage
         private int nextCount = 0;
         private int firstTag = 0;
         private int renameIteration = 0;
-        private string sortval = "NAME";
         private bool isAnimated = false;
         private string fileparth = null;
         private int sourceCount = 0;
@@ -367,7 +367,6 @@ namespace SortImage
             if (sourceAdd.ShowDialog() == DialogResult.OK) {
                 workingFolders = sourceAdd.GetSourceFolders();
                 sourceCount = sourceAdd.GetSourceCount();
-                sortval = sourceAdd.GetSortVal();
                 fileNameCreator.duplicateFolder = workingFolders[dupFold];
                 storedSettings.saveSettings();
             }
@@ -471,7 +470,7 @@ namespace SortImage
             firstImage = false;
             allowMove = true;
 
-            thumbController.SortValue = sortval;
+            thumbController.OrderBy = storedSettings.OrderBy;
             for (int i = 0; i < sourceCount; i++) {
                 if (workingFolders[i] != null) {
                     thumbController.LoadFolder(workingFolders[i]);
@@ -1111,7 +1110,8 @@ namespace SortImage
         private void pictureBox1_Info_update(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             try {
-                if (e.X != lastToolTipX || e.Y != lastToolTipY) {
+                if (Math.Abs(e.X - lastToolTipX) > toolTipRefreshPx ||
+                    Math.Abs(e.Y - lastToolTipY) > toolTipRefreshPx) {
                     imageInfo.Show(currentToolTipText, mainPanel, splitContainer1.Panel1.Width + e.X + 25, e.Y + 10);
                     lastToolTipX = e.X;
                     lastToolTipY = e.Y;

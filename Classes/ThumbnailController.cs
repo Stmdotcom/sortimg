@@ -23,7 +23,7 @@ namespace SortImage
     {
         private bool cancelScanning;
         static readonly object cancelScanningLock = new object();
-        private string sortval = "";
+        private int orderBy = 0;
         private List<string> fileList;
         private int loadAmount = 20;
         private FileNameBuilder fnb = new FileNameBuilder(false);
@@ -34,10 +34,10 @@ namespace SortImage
             get { return loadAmount; }
         }
 
-        public string SortValue
+        public int OrderBy
         {
-            set { sortval = value; }
-            get { return sortval; }
+            set { orderBy = value; }
+            get { return orderBy; }
         }
 
         public int fileCount
@@ -104,7 +104,7 @@ namespace SortImage
         {
             List<string> files = fnb.ProcessDirectoryList(folderPath);
 
-            if (sortval == "SIZE")
+            if (orderBy == 1)
             {
                 var sort = from image in files
                            orderby new FileInfo(image).Length descending
@@ -116,7 +116,7 @@ namespace SortImage
                 }
 
             }
-            else if (sortval == "DATE")
+            else if (orderBy == 2)
             {
                 var sort = from image in files
                            orderby new FileInfo(image).LastWriteTime descending

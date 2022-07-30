@@ -10,7 +10,6 @@ namespace SortImage
 
         private int sourceCount = 0;
         private bool logval = true;
-        private string sortval = "NAME";
         private string lastDir = null;
         private int foldercount = 0;
         private string defaultDupFolderPath = null;
@@ -47,20 +46,9 @@ namespace SortImage
         {
             if (sourceCount == 0)//Special for the first folder picked
             {
-                SortDialog b = new SortDialog(logval);
-                b.StartPosition = FormStartPosition.CenterParent;
-                if (b.ShowDialog() == DialogResult.OK) {
-                    sortval = b.GetString();
-                    logval = b.GetLogChecked();
-                    if (logval == true) {
-                        settings.LogValue = true;
-                    } else {
-                        settings.LogValue = false;
-                    }
-
-                }
                 pickDupFolder.Enabled = true;
             }
+
             if (sourceCount < 10) {
                 addSourceFolder();
                 sourceCount++;
@@ -136,11 +124,6 @@ namespace SortImage
         public bool GetLogVal()
         {
             return logval;
-        }
-
-        public string GetSortVal()
-        {
-            return sortval;
         }
 
         public string GetlastDir()

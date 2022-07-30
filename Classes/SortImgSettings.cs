@@ -21,6 +21,7 @@ namespace SortImage
         private static string lastDir = null;
         private static bool logval = true;
         private static int dupCheckMode = 0; // 0 = off, 1 = on
+        private static int orderBy = 0; // 0 = NAME, 1 = SIZE, 2 = DATE
 
         public SortImgSettings( string ap, Logging log)
         {
@@ -66,6 +67,7 @@ namespace SortImage
                 logval = value;
             }
         }
+
         public int DuplicateCheckMode
         {
             get
@@ -76,6 +78,18 @@ namespace SortImage
             {
                 dupCheckMode = value;
             }
+        } 
+        
+        public int OrderBy
+        {
+            get
+            {
+                return orderBy;
+            }
+            set
+            {
+                orderBy = value;
+            }
         }
 
         public void saveSettings()
@@ -85,6 +99,7 @@ namespace SortImage
                 INI.IniWriteValue("directories", "lastimage", lastDir);
                 INI.IniWriteValue("options", "Log", Convert.ToString(logval));
                 INI.IniWriteValue("options", "DupMode", Convert.ToString(dupCheckMode));
+                INI.IniWriteValue("options", "OrderBy", Convert.ToString(orderBy));
             }
             catch(Exception)
             {
@@ -142,11 +157,18 @@ namespace SortImage
                         logval = false;
                     }
 
-                    int var2 = Convert.ToInt16(INI.IniReadValue("options", "DupMode"));
-                    if (var2 >= 0 && var2 < 2) //Value must be between 0 and 3 or will stay on default. Check incase of manual edit.
+                    int dupCheckModeRaw = Convert.ToInt16(INI.IniReadValue("options", "DupMode"));
+                    if (dupCheckModeRaw >= 0 && dupCheckModeRaw <= 1)
                     {
-                        dupCheckMode = var2;
-                        logger.writeConsole("Dupmode loaded from INI");
+                        dupCheckMode = dupCheckModeRaw;
+                        logger.writeConsole("DupMode loaded from INI");
+                    }
+
+                    int orderByRaw = Convert.ToInt16(INI.IniReadValue("options", "OrderBy"));
+                    if (orderByRaw >= 0 && orderByRaw <= 2)
+                    {
+                        orderBy = orderByRaw;
+                        logger.writeConsole("OrderBy loaded from INI");
                     }
                 }
 
@@ -197,6 +219,7 @@ namespace SortImage
             INI.IniWriteValue("keybindings", "Dir 6", "98");
             INI.IniWriteValue("options", "Log", "true");
             INI.IniWriteValue("options", "DupMode", "0");
+            INI.IniWriteValue("options", "OrderBy", "0");
         }
     }
 }

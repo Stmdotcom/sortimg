@@ -25,6 +25,8 @@ namespace SortImage
             updateKeyText(inkeys[0]);
             keyList.DataSource = settings.GetKeyNames();
             dupCheckType.SelectedIndex = settings.DuplicateCheckMode;
+            enableLoggingCheckbox.Checked = settings.LogValue;
+            fileSortComboBox.SelectedIndex = settings.OrderBy;
         }
 
         private void Config_Load(object sender, EventArgs e) {}
@@ -77,6 +79,16 @@ namespace SortImage
         private void updateKeyText(int keyValue)
         {
             currentKey.Text = Convert.ToString(keyValue) + " (" + Enum.GetName(typeof(Keys), keyValue) + ")";
+        }
+
+        private void enableLoggingCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            settings.LogValue = enableLoggingCheckbox.Checked;
+        }
+
+        private void fileSortComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            settings.OrderBy = fileSortComboBox.SelectedIndex;
         }
     }
 }

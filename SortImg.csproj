@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\ImgUtils.cs" />
     <Compile Include="Classes\Utils.cs" />
     <Compile Include="Classes\Utils64.cs" />
     <Compile Include="Classes\DynamicButtons.cs" />
@@ -107,12 +108,6 @@
     <Compile Include="Dialogs\BmpToPngDialog.designer.cs">
       <DependentUpon>BmpToPngDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\ProcceingDialog2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\ProcceingDialog2.Designer.cs">
-      <DependentUpon>ProcceingDialog2.cs</DependentUpon>
-    </Compile>
     <Compile Include="Dialogs\DeleteDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,23 +133,17 @@
     <Compile Include="Dialogs\FolderMergeDialog.designer.cs">
       <DependentUpon>FolderMergeDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\ProcceingDialog.cs">
+    <Compile Include="Dialogs\ProcessingDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\ProcceingDialog.Designer.cs">
-      <DependentUpon>ProcceingDialog.cs</DependentUpon>
+    <Compile Include="Dialogs\ProcessingDialog.Designer.cs">
+      <DependentUpon>ProcessingDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\GifDialog.cs">
+    <Compile Include="Dialogs\PreviewImageDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogs\GifDialog.Designer.cs">
-      <DependentUpon>GifDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Dialogs\SortDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Dialogs\SortDialog.Designer.cs">
-      <DependentUpon>SortDialog.cs</DependentUpon>
+    <Compile Include="Dialogs\PreviewImageDialog.Designer.cs">
+      <DependentUpon>PreviewImageDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\SourceDialog.cs">
       <SubType>Form</SubType>
@@ -182,9 +171,6 @@
     <EmbeddedResource Include="Dialogs\BmpToPngDialog.resx">
       <DependentUpon>BmpToPngDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\ProcceingDialog2.resx">
-      <DependentUpon>ProcceingDialog2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\DeleteDialog.resx">
       <DependentUpon>DeleteDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -194,17 +180,14 @@
     <EmbeddedResource Include="Dialogs\ErrorDialog.resx">
       <DependentUpon>ErrorDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\GifDialog.resx">
-      <DependentUpon>GifDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Dialogs\PreviewImageDialog.resx">
+      <DependentUpon>PreviewImageDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\FolderMergeDialog.resx">
       <DependentUpon>FolderMergeDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\ProcceingDialog.resx">
-      <DependentUpon>ProcceingDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dialogs\SortDialog.resx">
-      <DependentUpon>SortDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Dialogs\ProcessingDialog.resx">
+      <DependentUpon>ProcessingDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogs\SourceDialog.resx">
       <DependentUpon>SourceDialog.cs</DependentUpon>
@@ -217,6 +200,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -233,15 +218,14 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Classes\PreviewLayer.cs" />
+    <None Include="TODO.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
     <Content Include="Resources\corrupt.jpg" />
     <Content Include="Resources\Loading.PNG" />
     <Content Include="Resources\thumberror.jpg" />
-    <Content Include="buglist.txt" />
-    <Content Include="changelog.txt" />
-    <Content Include="features.txt" />
+    <None Include="README.md" />
     <None Include="Resources\X_32x32-32.png" />
     <None Include="Resources\folder_new.png" />
     <None Include="Resources\bin.png" />

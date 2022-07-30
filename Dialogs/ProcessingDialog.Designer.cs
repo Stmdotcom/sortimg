@@ -1,6 +1,6 @@
 ﻿namespace SortImage
 {
-    partial class ProcceingDialog
+    partial class ProcessingDialog
     {
         /// <summary>
         /// Required designer variable.

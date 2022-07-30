@@ -51,7 +51,7 @@
             // 
             // help3
             // 
-            this.help3.Location = new System.Drawing.Point(777, 47);
+            this.help3.Location = new System.Drawing.Point(777, 44);
             this.help3.Name = "help3";
             this.help3.Size = new System.Drawing.Size(30, 22);
             this.help3.TabIndex = 32;
@@ -101,7 +101,7 @@
             // pickDupFolder
             // 
             this.pickDupFolder.Enabled = false;
-            this.pickDupFolder.Location = new System.Drawing.Point(98, 239);
+            this.pickDupFolder.Location = new System.Drawing.Point(98, 240);
             this.pickDupFolder.Name = "pickDupFolder";
             this.pickDupFolder.Size = new System.Drawing.Size(138, 23);
             this.pickDupFolder.TabIndex = 28;
@@ -146,7 +146,7 @@
             this.Controls.Add(this.outputFolderTextBox);
             this.Name = "SourceDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Folder Setup";
+            this.Text = "Source Folders";
             this.ResumeLayout(false);
             this.PerformLayout();
 

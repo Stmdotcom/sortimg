@@ -10,10 +10,10 @@ using System.IO;
 
 namespace SortImage
 {
-    public partial class GifDialog : Form
+    public partial class PreviewImageDialog : Form
     {
         Image holder;
-        public GifDialog(string parth, bool isaGif)
+        public PreviewImageDialog(string path, bool isaGif)
         {
                 InitializeComponent();
                 if (isaGif == true)
@@ -26,7 +26,7 @@ namespace SortImage
                 }
                 try
                 {
-                    holder = Image.FromFile(parth);
+                    holder = Image.FromFile(path);
                 }
                 catch
                 {

@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Collections;
@@ -72,7 +66,7 @@ namespace SortImage
                     ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
                     // Create an Encoder object based on the GUID
                     // for the Quality parameter category.
-                    System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+                    System.Drawing.Imaging.Encoder myEncoder = Encoder.Quality;
                     EncoderParameters myEncoderParameters = new EncoderParameters(1);
                     EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 100L);
                     myEncoderParameters.Param[0] = myEncoderParameter;
@@ -82,7 +76,7 @@ namespace SortImage
                 else if (filetype == "png")
                 {
                     // Save the image in PNG format.
-                    image1.Save(sourcedir + "\\" + sourceFile + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                    image1.Save(sourcedir + "\\" + sourceFile + ".png", ImageFormat.Png);
                 }
                 progressBar1.Increment(1);
             }

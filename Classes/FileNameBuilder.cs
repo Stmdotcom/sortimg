@@ -9,12 +9,12 @@ namespace SortImage
     class FileNameBuilder
     {
         private string dupFolder;
-        private bool orgnText;
+        private bool orgnText; // What does this do?
 
-        public FileNameBuilder(bool set)
+        public FileNameBuilder(bool orignalText)
         {
             dupFolder = "null";
-            orgnText = set;
+            orgnText = orignalText;
         }
 
         public string duplicateFolder
@@ -46,7 +46,7 @@ namespace SortImage
         /// </summary>
         /// <param name="dir">Name of directory to create</param>
         /// <returns>Path if created else NULL</returns>
-        public string createDirctory(string path)
+        public string createDirectory(string path)
         {
             //string path = dir;
             try

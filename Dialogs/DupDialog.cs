@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms;
 
 namespace SortImage
 {
@@ -17,51 +12,38 @@ namespace SortImage
         string size;
         string dupSelect;
         private Image holder;
-        //private bool renametog = true;
 
-        public DupDialog(string filename, string dest, long ll, bool noRename, string text)
+        public DupDialog(string filename, string dest, long size, bool noRename, string text)
         {
             InitializeComponent();
-            if (text == null || text == "")
-            {
+            if (text == null || text == "") {
                 label1.Text = "No text passed";
-            }
-            else
-            {
+            } else {
                 label1.Text = text;
-            }   
+            }
             desta = dest;
-         
+
             fname = filename;
-            size = ll.ToString();
-            try
-            {
-                try
-                {
-                    holder = Bitmap.FromFile(dest);
-                }
-                catch
-                {
-                    //pictureBox1.Image = new Bitmap("corrupt.jpg");
-                    pictureBox1.Image  = global::SortImage.Properties.Resources.corrupt;
+            this.size = size.ToString();
+            try {
+                try {
+                    holder = Image.FromFile(dest);
+                } catch {
+                    pictureBox1.Image = Properties.Resources.corrupt;
                 }
                 pictureBox1.Image = new Bitmap(holder);
                 holder.Dispose();
-                pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+                pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                 this.Invalidate();
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
             }
 
-            if (noRename == true)
-            {
+            if (noRename == true) {
                 dupDialogRename.Enabled = false;
                 dupDialogRename.Visible = false;
             }
 
         }
-
 
         public string GetString()
         {
@@ -84,13 +66,6 @@ namespace SortImage
             dupSelect = "RENAME";
         }
 
-        /*
-        private void dupDialogCancel_Click(object sender, EventArgs e)
-        {
-
-        }
-         */
-
         private void dupDialogDupFold_Click(object sender, EventArgs e)
         {
             dupSelect = "DUP";
@@ -98,27 +73,16 @@ namespace SortImage
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-
-            bool isaGif = false;
-            if (Path.GetExtension(desta) == ".gif")
-            {
-                isaGif = true;
-            }
-            GifDialog a = new GifDialog(desta, isaGif);
-            a.StartPosition = FormStartPosition.CenterParent;
-            a.MaximumSize = new Size(300, 300);
-            try
-            {
-                if (a.ShowDialog() == DialogResult.OK)
-                {
-                    a.Dispose();
+            PreviewImageDialog previewImageDialog = new PreviewImageDialog(desta, Path.GetExtension(desta) == ".gif");
+            previewImageDialog.StartPosition = FormStartPosition.CenterParent;
+            previewImageDialog.MaximumSize = new Size(300, 300);
+            try {
+                if (previewImageDialog.ShowDialog() == DialogResult.OK) {
+                    previewImageDialog.Dispose();
                 }
-            }
-            catch (Exception)
-            {
-                a.Dispose();
-              //  logger.writeConsoleError("Gif animation error", ex);
-                MessageBox.Show("Gif closed due to GDI+ error in playback \n Gif may be corrupt");
+            } catch (Exception) {
+                previewImageDialog.Dispose();
+                MessageBox.Show("Image closed due to GDI+ error\n Image may be corrupt");
             }
         }
     }

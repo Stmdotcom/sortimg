@@ -146,7 +146,7 @@
             this.Controls.Add(this.outputFolderTextBox);
             this.Name = "SourceDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "6";
+            this.Text = "Source Folders";
             this.ResumeLayout(false);
             this.PerformLayout();
 

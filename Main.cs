@@ -30,12 +30,11 @@ namespace SortImage
         private int firstTag = 0;
         private int renameIteration = 0;
         private bool isAnimated = false;
-        private string fileparth = null;
+        private string filepath = null;
         private int sourceCount = 0;
         private string bwFold = "";
         private int progress = 0;
         private bool firstImage = false;
-        private string currentImageFocus = "";
         private int lastButtonIndex = 999;
         private bool allowMove = true;
         private bool is64bit = false;
@@ -103,7 +102,6 @@ namespace SortImage
 
             if (selectedImageViewers.Count > 0) {
                 activeImageViewer = selectedImageViewers[0];
-                currentImageFocus = activeImageViewer.ImageLocation;
                 SetPicture();
             }
 
@@ -116,9 +114,8 @@ namespace SortImage
             Invalidate();
 
             if (firstImage == false) {
-                activeImageViewer = (ImageViewer)flowLayoutPanelMain.Controls[0];
+                activeImageViewer = (ImageViewer) flowLayoutPanelMain.Controls[0];
                 FixActiveSelection();
-                currentImageFocus = activeImageViewer.ImageLocation;
                 SetPicture();
                 firstImage = true;
             }
@@ -175,14 +172,14 @@ namespace SortImage
 
         private void ImageViewer_MouseClick(object sender, MouseEventArgs e)
         {
+            ImageViewer selectedViewer = (ImageViewer)sender;
             if ((ModifierKeys & Keys.Shift) != Keys.None && (e.Button & MouseButtons.Left) == MouseButtons.Left) {
-                ImageViewer selectedViewer = (ImageViewer)sender;
                 if (selectedImageViewers.Contains(selectedViewer)) {
                     selectedImageViewers.Remove(selectedViewer);
                     if (selectedImageViewers.Count > 0) {
                         activeImageViewer = selectedImageViewers[0];
                     } else {
-                        checkController(true);
+                        UpdatePreviewPanel(true);
                     }
                 } else {
                     activeImageViewer = selectedViewer;
@@ -192,25 +189,22 @@ namespace SortImage
                 SetPicture();
             } else if ((e.Button & MouseButtons.Left) == MouseButtons.Left) {
                 selectedImageViewers.Clear();
-                activeImageViewer = (ImageViewer)sender;
-                currentImageFocus = activeImageViewer.ImageLocation;
+                activeImageViewer = selectedViewer;
                 FixActiveSelection();
                 SetPicture();
             } else {
                 // Right click, thus is a request to remove the preview image
                 selectedImageViewers.Clear();
-                ImageViewer oldImageViewer = activeImageViewer;
-                activeImageViewer = (ImageViewer)sender;
-                if (currentImageFocus == activeImageViewer.ImageLocation) {
+                if (selectedViewer.ImageLocation == activeImageViewer.ImageLocation) {
                     MessageBox.Show("Can't remove a highlighted image from queue");
                 } else {
-                    activeImageViewer.Dispose();
-                    activeImageViewer = oldImageViewer;
+                    selectedViewer.Dispose(); // Remove current highlighted
+                    // activeImageViewer = newImageViewer;
                     Progressupdate(1);
                     FixActiveSelection();
                 }
             }
-            checkController(false);
+            UpdatePreviewPanel(false);
         }
 
         private void TrackBarSize_ValueChanged(object sender, EventArgs e)
@@ -370,6 +364,7 @@ namespace SortImage
                 fileNameCreator.duplicateFolder = workingFolders[dupFold];
                 storedSettings.saveSettings();
             }
+
             DisableButtons(false);
             finalFold();
         }
@@ -414,7 +409,7 @@ namespace SortImage
             try {
                 string imagePath = GetFilePath();
 
-                if (imagePath == "") {
+                if (imagePath == null) {
                     pictureBox1.Image = Properties.Resources.fill;
                 } else if (!File.Exists(imagePath)) {
                     MessageBox.Show("That image has been moved already!");
@@ -447,26 +442,22 @@ namespace SortImage
         }
 
         /// <summary>
-        /// Get the file parth of the current focus of the program
+        /// Get the file path of the current focus of the program
         /// </summary>
         /// <returns>String containing the file path</returns>
         private string GetFilePath()
         {
-            if (currentImageFocus != "" && currentImageFocus != null) {
+            if (activeImageViewer != null) {
                 allowMove = true;
-                return currentImageFocus;
+                return activeImageViewer.ImageLocation;
             } else {
-                allowMove = false; //Block moving if no valid image is shown
-                return "";
+                allowMove = false; // Block moving if no valid image is shown
+                return null;
             }
         }
 
         private void processImageDirectory()
         {
-            //  FileCopyedsource = new ArrayList();
-            //  FileCopyeddest = new ArrayList();
-            //  ButtonDispose = new ArrayList();
-
             firstImage = false;
             allowMove = true;
 
@@ -477,49 +468,55 @@ namespace SortImage
                 }
             }
             int tempvar = (thumbController.fileCount + progress);
-            label1.Text = Convert.ToString(tempvar);
-            progressBar1.Maximum = tempvar;
+            imagesProgressBar.Maximum = tempvar;
             thumbController.LoadSet();
         }
 
-        private void moveImage(string source, string destination, int iter, Button but)
+        private void moveImage(string source, string destination, int iter, Button callbackButton)
         {
-            string[] tempnames = new string[2];
-            tempnames = fileNameCreator.fileNameBuilder(source, destination, checkedTags, iter);
-            string dest = tempnames[0];
-            string dest2 = tempnames[1];
+            string[] targetPaths = fileNameCreator.fileNameBuilder(source, destination, checkedTags, iter);
+            string targetPath = targetPaths[0];
+            string duplicatePath = targetPaths[1];
             try {
                 if (!File.Exists(source)) {
                     MessageBox.Show("That image has been moved already!");
                     // UpdatePreview(true, null, false);
-                } else if (File.Exists(dest)) {
+                } else if (File.Exists(targetPath)) {
                     // Duplicate file name check. This is a basic 1 to 1 file check
-                    long size1 = imageMatcher.CalcSize(source);
-                    long size2 = imageMatcher.CalcSize(dest);
-                    if ((size1 == size2) && (iter == 0)) {
+                    long sourceSize = imageMatcher.CalcSize(source);
+                    long targetSize = imageMatcher.CalcSize(targetPath);
+                    if ((sourceSize == targetSize) && (iter == 0)) {
                         // There are the same name and same size and it is not currently iterating
-                        dupPopup(source, dest, dest2, destination, but, size2, iter, false, "Same File");
+                        dupPopup(source, targetPath, duplicatePath, destination, callbackButton, targetSize, iter, false, "Same File");
                     } else {
                         iter++;
-                        moveImage(source, destination, iter, but);
+                        moveImage(source, destination, iter, callbackButton);
                     }
                 } else if (allowMove) {
                     if (storedSettings.DuplicateCheckMode == 1) {
-                        if ((imageMatcher.CheckImage(source, dest) == true)) {
-                            logger.writeConsole("File " + dest + " is not a duplicate");
-                            ioMove(source, dest, but);
+                        if ((imageMatcher.CheckImage(source, targetPath) == true)) {
+                            logger.writeConsole("File " + targetPath + " is not a duplicate");
+                            ioMove(source, targetPath, callbackButton);
                             logger.writeLog("Moving File", logline);
-                            logger.writeLog(("Source " + source + "||" + "Dest " + dest), logline);
+                            logger.writeLog(("Source " + source + "||" + "Dest " + targetPath), logline);
                         } else {
-                            long size2 = imageMatcher.CalcSize(source);
-                            string he = imageMatcher.GetLastMatch();
-                            dupPopup(source, he, dest2, destination, but, size2, iter, true, "Visual Duplicate");
+                            dupPopup(
+                                source,
+                                imageMatcher.GetLastMatch(), 
+                                duplicatePath, 
+                                destination, 
+                                callbackButton,
+                                imageMatcher.CalcSize(source), 
+                                iter, 
+                                true, 
+                                "Visual Duplicate"
+                            );
                         }
                     } else {
-                        logger.writeConsole("File " + dest + " is not a duplicate");
-                        ioMove(source, dest, but);
+                        logger.writeConsole("File " + targetPath + " is not a duplicate");
+                        ioMove(source, targetPath, callbackButton);
                         logger.writeLog("Moving File", logline);
-                        logger.writeLog(("Source " + source + "||" + "Dest " + dest), logline);
+                        logger.writeLog(("Source " + source + "||" + "Dest " + targetPath), logline);
                     }
                 } else {
                     MessageBox.Show("Not allowed to move this file!");
@@ -605,29 +602,27 @@ namespace SortImage
                     thumbController.QueFile(filename);
                 }
             }
-            checkController(true);
+            UpdatePreviewPanel(true);
         }
 
-        private void checkController(bool getFront)
+        private void UpdatePreviewPanel(bool selectFirst)
         {
-            if (this.flowLayoutPanelMain.Controls.Count < (thumbController.ImageLoadAmount / 2)) //Check if to load more images from the queue
+            if (flowLayoutPanelMain.Controls.Count < (thumbController.ImageLoadAmount / 2)) //Check if to load more images from the queue
             {
                 thumbController.LoadSet();
             }
-            if (this.flowLayoutPanelMain.Controls.Count > 0) //Check if there are still images to process
+
+            if (flowLayoutPanelMain.Controls.Count > 0) //Check if there are still images to process
             {
-                if (getFront == true) {
-                    activeImageViewer = (ImageViewer)this.flowLayoutPanelMain.Controls[0];
-                    // activeImageViewer.IsActive = true;
-                    currentImageFocus = activeImageViewer.ImageLocation;
+                if (selectFirst == true) {
+                    activeImageViewer = (ImageViewer) flowLayoutPanelMain.Controls[0];
                     FixActiveSelection();
                     SetPicture();
                 }
             } else //No images in the preview panel
               {
-                currentImageFocus = ""; //No image, no focus
+                activeImageViewer = null; //No image, no focus
                 SetPicture();
-                //  int leftoverfiles = Convert.ToInt16(label1.Text) - progress;
                 MessageBox.Show("Out of images");
                 DisableButtons(true); //Disable buttons till more folders are added
             }
@@ -640,12 +635,11 @@ namespace SortImage
         {
             if (incdec == 1 && allowMove == true) {
                 progress++;
-                progressBar1.Increment(1);
-            } else if (incdec == 2) {
+                imagesProgressBar.Increment(1);
+            } else if (incdec == -1) {
                 progress--;
-                progressBar1.Increment(-1);
-            } else if (incdec == 3) { }//Do nothing
-            textBox7.Text = Convert.ToString(progress);
+                imagesProgressBar.Increment(-1);
+            }
         }
 
         /// <summary>
@@ -656,7 +650,7 @@ namespace SortImage
         private void Copy(int num, Button but)
         {
             String fileName = GetFilePath();
-            if (fileName == "NULL") {
+            if (fileName == null) {
                 MessageBox.Show("Can't move nothing!");
             } else {
                 //If there is a mutiselect
@@ -665,19 +659,18 @@ namespace SortImage
                         activeImageViewer = viewer;
                         //activeImageViewer.IsActive = true;
                         FixActiveSelection();
-                        currentImageFocus = viewer.ImageLocation;
-                        moveImage(currentImageFocus, workingFolders[num], 0, but);
+                        moveImage(viewer.ImageLocation, workingFolders[num], 0, but);
 
                         Progressupdate(1); //Update the progress bar      
                         UpdatePreview(true, null, false);
                     }
+
                     selectedImageViewers.Clear();
                 } else {
                     moveImage(fileName, workingFolders[num], 0, but);
                     Progressupdate(1); //Update the progress bar
                     UpdatePreview(true, null, false);
                 }
-
             }
         }
 
@@ -687,7 +680,7 @@ namespace SortImage
         private void CopyDelete()
         {
             String fileName = GetFilePath();
-            if (fileName == "NULL") {
+            if (fileName == null) {
                 MessageBox.Show("Can't delete nothing!");
             } else {
                 Deleter(fileName);
@@ -708,7 +701,7 @@ namespace SortImage
 
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
                 if (Directory.Exists(folderBrowserDialog1.SelectedPath)) {
-                    if (Checkfolder(workingFolders, folderBrowserDialog1.SelectedPath) == false) {
+                    if (StringInArray(workingFolders, folderBrowserDialog1.SelectedPath)) {
                         MessageBox.Show("The two chosen folders are the same. Please pick different folders");
                     } else {
                         try {
@@ -744,19 +737,19 @@ namespace SortImage
         }
 
         /// <summary>
-        /// Compares and array to a string. Used to check folder integrity
+        /// If string is in array
         /// </summary>
-        /// <param name="a">Array of folders</param>
-        /// <param name="b">Folder to check against</param>
+        /// <param name="haystack">Array of folders</param>
+        /// <param name="needle">Folder to check against</param>
         /// <returns></returns>
-        private bool Checkfolder(string[] a, String b)
+        private bool StringInArray(string[] haystack, string needle)
         {
-            foreach (String st in a) {
-                if (st == b) {
-                    return false;
+            foreach (string testString in haystack) {
+                if (testString == needle) {
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -768,10 +761,8 @@ namespace SortImage
         private void Deleter(string fileparth)
         {
             if (deletype == 0) {
-                string name = Path.GetFileName(fileparth);
-                name = "zz_DELETE_" + name;
-                string des = workingFolders[dupFold];
-                des = des + '\\' + name;
+                string name = "zz_DELETE_" + Path.GetFileName(fileparth);
+                string des = workingFolders[dupFold] + '\\' + name;
                 moveDup(fileparth, des, 0, null);
                 logger.writeLog("Marked for deletion", logline);
                 logger.writeLog(("Source " + fileparth + "||" + "Dest " + des), logline);
@@ -792,7 +783,7 @@ namespace SortImage
         // Generates the control in this case it is for the output folders    
         private void GenerateControl(int num)
         {
-            String path = workingFolders[num];
+            string path = workingFolders[num];
             int half = pContainer.Width / 2;
             Button dynamicButton = buttonbuilder.DynamicButton(contextMenuStrip1, curfold, half);
             dynamicButton.MouseClick += new MouseEventHandler(Button_Click);
@@ -806,7 +797,7 @@ namespace SortImage
 
         private void dynamicButton_MouseEnter(object sender, EventArgs e)
         {
-            Button clickedButton = (Button)sender; //get the button that was clicked
+            Button clickedButton = (Button) sender; //get the button that was clicked
             lastButtonIndex = Convert.ToInt16(clickedButton.Name.Substring("dynamicButton".Length));
         }
 
@@ -815,10 +806,7 @@ namespace SortImage
         {
             string filepath = Returnfirstimage(path);
             if (filepath != null) {
-                FileStream fs;
-                fs = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-                but.BackgroundImage = new Bitmap(System.Drawing.Image.FromStream(fs).GetThumbnailImage(but.Size.Width, but.Size.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallback), IntPtr.Zero));
-                fs.Close();
+                FormHelpers.ApplyButtonImage(but, filepath);
                 buttonPictureToggle[fold] = 1;
             } else {
                 but.BackgroundImage = global::SortImage.Properties.Resources.zoom_32x32_32;
@@ -833,7 +821,9 @@ namespace SortImage
                     Button clickedButton = (Button)sender; //get the button that was clicked
                     string index = clickedButton.Name.Substring("dynamicButton".Length);
                     Button tempbut = (Button)pContainer.Controls.Find("dynamicPictureBox" + index, true)[0];
+
                     Copy(Convert.ToInt16(index), tempbut);
+
                     string foldpath = workingFolders[Convert.ToInt16(index)];
                     if (buttonPictureToggle[Convert.ToInt16(index)] == 0) {
                         SetbuttonImage(tempbut, foldpath, Convert.ToInt16(index));
@@ -849,34 +839,31 @@ namespace SortImage
             }
         }
 
-
         private void Hide_Main(bool show)
         {
             if (show) {
                 pContainer.Visible = true;
-                progressBar1.Visible = true;
+                imagesProgressBar.Visible = true;
                 splitContainer1.Visible = true;
                 foldAdd.Visible = true;
                 Undo.Visible = true;
             } else {
                 pContainer.Visible = false;
-                progressBar1.Visible = false;
+                imagesProgressBar.Visible = false;
                 splitContainer1.Visible = false;
                 foldAdd.Visible = false;
                 Undo.Visible = false;
             }
         }
 
-
         // Handler for clicking on the preview pick, showing the folder preview 
         private void Picturebox_Click(object sender, MouseEventArgs e)
         {
             switch (e.Button) {
                 case MouseButtons.Left:
-
                     Button clickedButton = (Button)sender;
                     string index = clickedButton.Name.Substring("dynamicPictureBox".Length);
-                    fileparth = workingFolders[Convert.ToInt16(index)];
+                    filepath = workingFolders[Convert.ToInt16(index)];
                     PreviewBuild(clickedButton);
 
                     break;
@@ -906,6 +893,7 @@ namespace SortImage
             flashButtonOn((Button)pContainer.Controls.Find("dynamicButton" + index, true)[0]);
             Copy(Convert.ToInt16(index), tempbut);
             string foldpath = workingFolders[Convert.ToInt16(index)];
+
             if (buttonPictureToggle[Convert.ToInt16(index)] == 0) {
                 SetbuttonImage(tempbut, foldpath, Convert.ToInt16(index));
             }
@@ -924,32 +912,25 @@ namespace SortImage
             } else if (Convert.ToInt16(keyBinds[2]) == e.KeyValue) {
                 Undo_Click(null, null);
                 flashButtonOn(Undo);
-            } else if (Convert.ToInt16(keyBinds[3]) == e.KeyValue) // TODO: Should be able to make this somewhat dynamic...
-              {
-                if (workingFolders[dupFold + 1] != null) {
-                    KeyCopy(dupFold + 1);
-                }
+            } else if (Convert.ToInt16(keyBinds[3]) == e.KeyValue) {
+                PreformCopyFromKeyPress(1);
             } else if (Convert.ToInt16(keyBinds[4]) == e.KeyValue) {
-                if (workingFolders[dupFold + 2] != null) {
-                    KeyCopy(dupFold + 2);
-                }
+                PreformCopyFromKeyPress(2);
             } else if (Convert.ToInt16(keyBinds[5]) == e.KeyValue) {
-                if (workingFolders[dupFold + 3] != null) {
-                    KeyCopy(dupFold + 3);
-                }
+                PreformCopyFromKeyPress(3);
             } else if (Convert.ToInt16(keyBinds[6]) == e.KeyValue) {
-                if (workingFolders[dupFold + 4] != null) {
-                    KeyCopy(dupFold + 4);
-                }
+                PreformCopyFromKeyPress(4);
             } else if (Convert.ToInt16(keyBinds[7]) == e.KeyValue) {
-                if (workingFolders[dupFold + 5] != null) {
-                    KeyCopy(dupFold + 5);
-                }
+                PreformCopyFromKeyPress(5);
             } else if (Convert.ToInt16(keyBinds[8]) == e.KeyValue) {
-                if (workingFolders[dupFold + 6] != null) {
-                    KeyCopy(dupFold + 6);
-                }
-            } else {
+                PreformCopyFromKeyPress(6);
+            }
+        }
+
+        private void PreformCopyFromKeyPress(int dupFolderOffset)
+        {
+            if (workingFolders[dupFold + dupFolderOffset] != null) {
+                KeyCopy(dupFold + dupFolderOffset);
             }
         }
 
@@ -973,7 +954,7 @@ namespace SortImage
             panelinner.Dispose();
             Hide_Main(true);
             nextCount = 0;
-            fileparth = null;
+            filepath = null;
         }
 
         private void PreviewBuild(Button clickedButton)
@@ -988,7 +969,7 @@ namespace SortImage
 
             Hide_Main(false);
 
-            previewPanel = new PreviewLayer(mainPanel.Size, fileparth, activePreviewButton, nextCount);
+            previewPanel = new PreviewLayer(mainPanel.Size, filepath, activePreviewButton, nextCount);
             previewPanel.ClosePanelButton.Text = "Close";
             previewPanel.ClosePanelButton.Click += new EventHandler(ClosePanelButton_Click);
             previewPanel.nextSetButton.Text = "More...";
@@ -1000,8 +981,6 @@ namespace SortImage
             panelinner.BringToFront();
             nextCount++;
         }
-
-
 
         // Loads the preview panel and creates the buttons for it
         private void button1_Click(object sender, EventArgs e)
@@ -1020,19 +999,23 @@ namespace SortImage
                     logline++;
                     logger.writeLog("Moving file (Undo)", logline);
                     logger.writeLog(("Source " + source + "||" + "Dest " + Destination), logline);
+
                     if (but != null) {
                         string index = but.Name.Substring("dynamicPictureBox".Length);
                         SetbuttonImage(but, Path.GetDirectoryName(source), Convert.ToInt16(index));
                     }
-                    if ((Path.GetExtension(source) != ".gif") && (but != null) && (storedSettings.DuplicateCheckMode == 1)) {
+
+                    if (!ImgUtils.IsGif(source) && but != null && storedSettings.DuplicateCheckMode == 1) {
                         imageMatcher.UndoLastHash();
                     }
+
                     UpdatePreview(false, Destination, true);
-                    Progressupdate(2); //Update the progress bar
+                    Progressupdate(-1);
                 }
             } catch (IOException e) {
                 logger.writeLogError("Issue undoing file move", e);
             }
+
             SetPicture();
         }
 
@@ -1043,13 +1026,13 @@ namespace SortImage
         /// <returns></returns>
         private string Returnfirstimage(string path)
         {
-            string[] szFiles;
             foreach (string szType in fileNameCreator.makeFileTypes()) {
-                szFiles = Directory.GetFiles(path, szType);
+                string[] szFiles = Directory.GetFiles(path, szType);
                 if (szFiles.Length > 0) {
                     return szFiles[0];
                 }
             }
+
             return null;
         }
 
@@ -1060,35 +1043,10 @@ namespace SortImage
         /// <param name="e"></param>
         private void skipbut_Click(object sender, EventArgs e)
         {
-            string filename = "";
             if (activeImageViewer != null) {
-                filename = activeImageViewer.ImageLocation;
-                UpdatePreview(true, filename, false);
-                Progressupdate(3); //Update the progress bar
+                UpdatePreview(true, activeImageViewer.ImageLocation, false);
+                Progressupdate(0); //Update the progress bar
             }
-        }
-
-        /// <summary>
-        /// Sets the button to be the relivent image
-        /// </summary>
-        /// <param name="but">Button that is used</param>
-        /// <param name="path">Parth to Image that is used</param>
-        public static void SetbuttonIm(Button but, string path)
-        {
-            FileStream fs;
-            fs = new FileStream(path, FileMode.Open, FileAccess.Read);
-            but.BackgroundImage = new Bitmap(System.Drawing.Image.FromStream(fs).GetThumbnailImage(but.Size.Width, but.Size.Height, new System.Drawing.Image.GetThumbnailImageAbort(ThumbnailCallbackStatic), IntPtr.Zero));
-            fs.Close();
-        }
-
-        // Needed to stop exceptions
-        public static bool ThumbnailCallbackStatic()
-        {
-            return true;
-        }
-        public bool ThumbnailCallback()
-        {
-            return true;
         }
 
         // Adds text to the tag list
@@ -1110,9 +1068,13 @@ namespace SortImage
         private void pictureBox1_Info_update(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             try {
-                if (Math.Abs(e.X - lastToolTipX) > toolTipRefreshPx ||
-                    Math.Abs(e.Y - lastToolTipY) > toolTipRefreshPx) {
-                    imageInfo.Show(currentToolTipText, mainPanel, splitContainer1.Panel1.Width + e.X + 25, e.Y + 10);
+                if (Math.Abs(e.X - lastToolTipX) > toolTipRefreshPx || Math.Abs(e.Y - lastToolTipY) > toolTipRefreshPx) {
+                    imageInfo.Show(
+                        currentToolTipText, 
+                        mainPanel, 
+                        splitContainer1.Panel1.Width + e.X + 25, 
+                        e.Y + 10
+                    );
                     lastToolTipX = e.X;
                     lastToolTipY = e.Y;
                 }
@@ -1122,9 +1084,9 @@ namespace SortImage
         // Creates the info tooltip for the main picture box
         private void pictureBox_Info_create(object sender, EventArgs e)
         {
-            int iw = pictureBox1.Image.Width;
-            int ih = pictureBox1.Image.Height;
-            currentToolTipText = iw + " : " + ih + "\n" + GetFilePath();
+            int imageWidth = pictureBox1.Image.Width;
+            int imageHeight = pictureBox1.Image.Height;
+            currentToolTipText = imageWidth + " : " + imageHeight + "\n" + GetFilePath();
             imageInfo.Active = true;
         }
 
@@ -1144,12 +1106,12 @@ namespace SortImage
         //Toggle between using orignal file name or not
         private void butOrignText_Click(object sender, EventArgs e)
         {
-            if (fileNameCreator.orginalText == false) //Toggle
+            if (fileNameCreator.keepOrignalFileName == false) //Toggle
             {
-                fileNameCreator.orginalText = true;
+                fileNameCreator.keepOrignalFileName = true;
                 butOrignText.BackColor = Color.Gray; //Visual cue for toggle
             } else {
-                fileNameCreator.orginalText = false;
+                fileNameCreator.keepOrignalFileName = false;
                 butOrignText.BackColor = Color.Transparent; //Visual cue for toggle
             }
             newName.Text = "..." + fileNameCreator.fileNameBuilder(GetFilePath(), "", checkedTags, renameIteration)[0];
@@ -1159,24 +1121,27 @@ namespace SortImage
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             string focusImagePath = GetFilePath();
-            if (focusImagePath == "NULL") {
+            if (focusImagePath == null) {
                 MessageBox.Show("Not a valid image");
             } else {
-                bool isaGif = false;
-                if (Path.GetExtension(focusImagePath) == ".gif") {
-                    isaGif = true;
-                }
-                PreviewImageDialog gifDialog = new PreviewImageDialog(focusImagePath, isaGif);
+                bool isGif = ImgUtils.IsGif(focusImagePath);
+                PreviewImageDialog gifDialog = new PreviewImageDialog(focusImagePath, isGif);
+
                 gifDialog.StartPosition = FormStartPosition.CenterParent;
-                gifDialog.MaximumSize = new Size(deskWidth - 40, deskHeight - 40);
+                gifDialog.MaximumSize = new Size(deskWidth - 100, deskHeight - 100);
                 try {
                     if (gifDialog.ShowDialog() == DialogResult.OK) {
                         gifDialog.Dispose();
                     }
                 } catch (Exception ex) {
                     gifDialog.Dispose();
-                    logger.writeConsoleError("Gif animation error", ex);
-                    MessageBox.Show("'.GIF' closed due to GDI+ error in playback");
+                    if (isGif) {
+                        logger.writeConsoleError("Gif animation error", ex);
+                        MessageBox.Show("'.GIF' closed due to GDI+ error in playback");
+                    } else {
+                        logger.writeConsoleError("Load error", ex);
+                        MessageBox.Show("'GDI+ error");
+                    }
                 }
             }
         }
@@ -1203,8 +1168,8 @@ namespace SortImage
         {
             List<int> keyBinds = storedSettings.GetKeyBinds();
             List<string> keyNames = storedSettings.GetKeyNames();
-            ConfigDialog a = new ConfigDialog(storedSettings);
-            if (a.ShowDialog() == DialogResult.OK) {
+            ConfigDialog configDialog = new ConfigDialog(storedSettings);
+            if (configDialog.ShowDialog() == DialogResult.OK) {
                 // storedSettings.DuplicateCheckMode = a.getDupType();
                 //Only Reload keyboinds              
                 storedSettings.saveSettings();
@@ -1235,13 +1200,11 @@ namespace SortImage
             }
         }
 
-        private delegate void ChangeProgressBarCallback();
-
         private void sortByMD5ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Debugging Tool. MD5 hash groups will be returned on completion" + Environment.NewLine + "This might take a VERY long time with more than 100 files");
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
-                if (Checkfolder(workingFolders, folderBrowserDialog1.SelectedPath) == false) {
+                if (StringInArray(workingFolders, folderBrowserDialog1.SelectedPath)) {
                     MessageBox.Show("Two chosen folders are the same. Please pick different folders");
                 } else {
                     string fold = folderBrowserDialog1.SelectedPath;
@@ -1254,6 +1217,7 @@ namespace SortImage
                     Thread threadDialog = new Thread(threadDelegateDialog);
                     threadMD5.Start();
                     threadDialog.Start();
+
                     int once = 1;
                     while (threadMD5.IsAlive) {
                         Thread.Sleep(50);
@@ -1262,7 +1226,6 @@ namespace SortImage
                             threadMD5.Abort();
                             threadDialog.Abort();
                         }
-
 
                         if (once == 1 && md5Matcher.getProgressMax() >= 2) {
                             proDialog.SetProgressMax(md5Matcher.getProgressMax());
@@ -1278,6 +1241,7 @@ namespace SortImage
                     threadMD5.Abort();
                     threadDialog.Abort();
                     ArrayList fingerprints = md5Matcher.GetFingerprints();
+
                     int i = 0;
                     foreach (string print in fingerprints) {
                         int incer;
@@ -1300,7 +1264,7 @@ namespace SortImage
             MessageBox.Show("WARNING!: This operation will reset all current work" + Environment.NewLine + "---" + Environment.NewLine + "This might take a VERY long time if a lot of images are similar" + Environment.NewLine +
                 "time taken can be exponental in worst case! test on subsets first");
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
-                if (Checkfolder(workingFolders, folderBrowserDialog1.SelectedPath) == false) {
+                if (StringInArray(workingFolders, folderBrowserDialog1.SelectedPath)) {
                     MessageBox.Show("Folders is already in use. Please pick different folder");
                 } else {
                     bwFold = folderBrowserDialog1.SelectedPath;
@@ -1337,9 +1301,9 @@ namespace SortImage
 
         private void folderImageMergeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FolderMergeDialog fmd = new FolderMergeDialog();
-            fmd.StartPosition = FormStartPosition.CenterParent;
-            if (fmd.ShowDialog() == DialogResult.OK) {
+            FolderMergeDialog folderMergeDialog = new FolderMergeDialog();
+            folderMergeDialog.StartPosition = FormStartPosition.CenterParent;
+            if (folderMergeDialog.ShowDialog() == DialogResult.OK) {
                 MessageBox.Show("Folder merge complete");
             }
         }
@@ -1347,8 +1311,8 @@ namespace SortImage
         private void bwSortImageFolder_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
-            var ex = new ImageMatcherSpeed();
-            files = ex.CheckDirDups(bwFold, ReportProgresshandler, e, worker);
+            var imageMatcherSpeed = new ImageMatcherSpeed();
+            files = imageMatcherSpeed.CheckDirDups(bwFold, ReportProgresshandler, e, worker);
         }
 
         private void bwSortImageFolder_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -1362,8 +1326,8 @@ namespace SortImage
 
         private void ReportProgresshandler(int percent, string state)
         {
+            // Also does the Invoke
             bwSortImageFolder.ReportProgress(percent);
-            // also does the Invoke
         }
 
         private void bwSortImageFolder_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -1375,15 +1339,16 @@ namespace SortImage
                     fmProgress = null;
                 }
             } else {
-                string newpath = "";
-                string newpath2 = "";
+                string visualDupsFolder = "";
+                string duplicatesFolder = "";
                 int lastvalue = -1;
                 List<long> lastsize = new List<long>();
+
                 if (files.Count > 1) {
                     var sortedfiles = (from entry in files orderby entry.Value ascending select entry);
-                    newpath = fileNameCreator.createDirectory(bwFold + "\\VisualDups");
-                    newpath2 = fileNameCreator.createDirectory(bwFold + "\\Duplicates");
-                    if (newpath != null) {
+                    visualDupsFolder = fileNameCreator.createDirectory(bwFold + "\\VisualDups");
+                    duplicatesFolder = fileNameCreator.createDirectory(bwFold + "\\Duplicates");
+                    if (visualDupsFolder != null) {
                         foreach (KeyValuePair<string, int> file in sortedfiles) {
                             if (File.Exists(file.Key)) // Duplicate file name check. This is a basic 1 to 1 file check
                             {
@@ -1391,7 +1356,7 @@ namespace SortImage
                                     string path = Path.GetFileName(file.Key);
                                     path = file.Value + "_" + path;
                                     try {
-                                        System.IO.File.Move(file.Key, newpath2 + "\\" + path);
+                                        System.IO.File.Move(file.Key, duplicatesFolder + "\\" + path);
                                     } catch (IOException) { }
                                 } else {
                                     if (lastvalue == file.Value) {
@@ -1404,7 +1369,7 @@ namespace SortImage
                                     string path = Path.GetFileName(file.Key);
                                     path = file.Value + "_" + path;
                                     try {
-                                        System.IO.File.Move(file.Key, newpath + "\\" + path);
+                                        System.IO.File.Move(file.Key, visualDupsFolder + "\\" + path);
                                     } catch (IOException) { }
                                 }
                             } else {
@@ -1413,17 +1378,20 @@ namespace SortImage
                         }
                     }
                 }
-                if (newpath != "") {
+
+                if (visualDupsFolder != "") {
                     string[] tem = new string[64];
-                    tem[0] = newpath;
-                    tem[dupFold] = newpath2;
+                    tem[0] = visualDupsFolder;
+                    tem[dupFold] = duplicatesFolder;
                     workingFolders = tem;
                     fileNameCreator.duplicateFolder = workingFolders[dupFold];
                     sourceCount = 1;
                     DisableButtons(false);
                     finalFold();
                 }
+                
                 System.Diagnostics.Debug.WriteLine("Done");
+                
                 if (fmProgress != null) {
                     fmProgress.Hide();
                     fmProgress = null;
@@ -1434,7 +1402,7 @@ namespace SortImage
         private void changeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
-                if (Checkfolder(workingFolders, folderBrowserDialog1.SelectedPath) == false) {
+                if (StringInArray(workingFolders, folderBrowserDialog1.SelectedPath)) {
                     MessageBox.Show("Two folders are the same. Please pick a different folder");
                 } else {
                     workingFolders[lastButtonIndex] = folderBrowserDialog1.SelectedPath;
@@ -1443,7 +1411,6 @@ namespace SortImage
                 }
             }
         }
-
 
         private void convertBmpToPngToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1472,7 +1439,6 @@ namespace SortImage
             Invalidate(); //Might not be needed
             flowLayoutPanelMain.Invalidate();
 
-
             GetSelectedImageViewers();
 
             //Reset selections
@@ -1487,6 +1453,7 @@ namespace SortImage
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -1505,19 +1472,15 @@ namespace SortImage
             selectionEnd = flowLayoutPanelMain.PointToClient(MousePosition);
             SetSelectionRect();
             flowLayoutPanelMain.Invalidate();
-            //Invalidate();
         }
+
         private void SetSelectionRect()
         {
-            int x, y;
-            int width, height;
+            int x = selectionStart.X > selectionEnd.X ? selectionEnd.X : selectionStart.X;
+            int y = selectionStart.Y > selectionEnd.Y ? selectionEnd.Y : selectionStart.Y;
 
-
-            x = selectionStart.X > selectionEnd.X ? selectionEnd.X : selectionStart.X;
-            y = selectionStart.Y > selectionEnd.Y ? selectionEnd.Y : selectionStart.Y;
-
-            width = selectionStart.X > selectionEnd.X ? selectionStart.X - selectionEnd.X : selectionEnd.X - selectionStart.X;
-            height = selectionStart.Y > selectionEnd.Y ? selectionStart.Y - selectionEnd.Y : selectionEnd.Y - selectionStart.Y;
+            int width = selectionStart.X > selectionEnd.X ? selectionStart.X - selectionEnd.X : selectionEnd.X - selectionStart.X;
+            int height = selectionStart.Y > selectionEnd.Y ? selectionStart.Y - selectionEnd.Y : selectionEnd.Y - selectionStart.Y;
 
             selection = new Rectangle(x, y, width, height);
         }
@@ -1541,5 +1504,6 @@ namespace SortImage
         }
         public int Size;
     }
+
     public delegate void ThumbnailImageEventHandler(object sender, ThumbnailImageEventArgs e);
 }

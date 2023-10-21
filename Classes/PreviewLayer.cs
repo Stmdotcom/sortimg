@@ -146,8 +146,7 @@ namespace SortImage
             {
                 PictureBox clickedButton = (PictureBox)sender; //get the button that was clicked
                 string index = clickedButton.Name.Substring(PREVIEWNAME.Length);
-                string fileparth = (string)filePaths[Convert.ToInt16(index)];
-                SortImg.SetbuttonIm(callerButton, fileparth);
+                FormHelpers.ApplyButtonImage(callerButton, (string)filePaths[Convert.ToInt16(index)]);
                 MessageBox.Show("New image chosen for folder preview");
             }
         }

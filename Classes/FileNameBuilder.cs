@@ -9,36 +9,24 @@ namespace SortImage
     class FileNameBuilder
     {
         private string dupFolder;
-        private bool orgnText; // What does this do?
+        private bool orignalFileName;
 
-        public FileNameBuilder(bool orignalText)
+        public FileNameBuilder(bool keepOrignalFilename)
         {
             dupFolder = "null";
-            orgnText = orignalText;
+            orignalFileName = keepOrignalFilename;
         }
 
         public string duplicateFolder
         {
-            get
-            {
-                return dupFolder;
-            }
-            set
-            {
-                dupFolder = value;
-            }
+            get { return dupFolder; }
+            set { dupFolder = value; }
         }
 
-        public bool orginalText
+        public bool keepOrignalFileName
         {
-            get
-            {
-                return orgnText;
-            }
-            set
-            {
-                orgnText = value;
-            }
+            get { return orignalFileName; }
+            set { orignalFileName = value;}
         }
 
         /// <summary>
@@ -80,67 +68,54 @@ namespace SortImage
         /// <returns>Array containing copy locations [0] = user location [1] = Duplicate location</returns>
         public string[] fileNameBuilder(string source, string Destination, List<string> tagList, int renameIteration)
         {
-            string dest;
-            string dest2 = dupFolder + '\\' + Path.GetFileName(source);
+            string targetPath;
+            string duplicatePath = dupFolder + '\\' + Path.GetFileName(source);
             string newFileName = "";
-            foreach (string tag in tagList)
-            {
+            foreach (string tag in tagList) {
                 newFileName += tag + "_";
             }
-            if ((newFileName != "") && (renameIteration == 0) && (orgnText == false))
-            {
-                dest = Destination + '\\' + newFileName + Path.GetExtension(source);
+            if ((newFileName != "") && (renameIteration == 0) && (keepOrignalFileName == false)) {
+                targetPath = Destination + '\\' + newFileName + Path.GetExtension(source);
+            } else if ((newFileName != "") && (renameIteration == 0) && (keepOrignalFileName == true)) {
+                targetPath = Destination + '\\' + newFileName + Path.GetFileName(source);
+            } else if ((newFileName != "") && (renameIteration != 0) && (keepOrignalFileName == false)) {
+                targetPath = Destination + '\\' + newFileName + "_(" + renameIteration + ")_" + Path.GetExtension(source);
+            } else if ((newFileName != "") && (renameIteration != 0) && (keepOrignalFileName == true)) {
+                targetPath = Destination + '\\' + newFileName + Path.GetFileNameWithoutExtension(source) + "_(" + renameIteration + ")_" + Path.GetExtension(source);
+            } else if (renameIteration != 0) {
+                targetPath = Destination + '\\' + Path.GetFileNameWithoutExtension(source) + "_(" + renameIteration + ")_" + Path.GetExtension(source);
+            } else {
+                targetPath = Destination + '\\' + Path.GetFileName(source);
             }
-            else if ((newFileName != "") && (renameIteration == 0) && (orgnText == true))
-            {
-                dest = Destination + '\\' + newFileName + Path.GetFileName(source);
-            }
-            else if ((newFileName != "") && (renameIteration != 0) && (orgnText == false))
-            {
-                dest = Destination + '\\' + newFileName + "_(" + renameIteration + ")_" + Path.GetExtension(source);
-            }
-            else if ((newFileName != "") && (renameIteration != 0) && (orgnText == true))
-            {
-                dest = Destination + '\\' + newFileName + Path.GetFileNameWithoutExtension(source) + "_(" + renameIteration + ")_" + Path.GetExtension(source);
-            }
-            else if (renameIteration != 0)
-            {
-                dest = Destination + '\\' + Path.GetFileNameWithoutExtension(source) + "_(" + renameIteration + ")_" + Path.GetExtension(source);
-            }
-            else
-            {
-                dest = Destination + '\\' + Path.GetFileName(source);
-            }
-            string check = System.IO.Path.GetFileName(dest);
-            if (check.Length > 200) //Reset file name if to large to avoid error on unable to write file name. This is not acurate. There are diffrences between the full path name and the file name depending on the file system in use.
-            {
+
+            string check = System.IO.Path.GetFileName(targetPath);
+            if (check.Length > 200) { // Reset file name if to large to avoid error on unable to write file name. This is not acurate. There are diffrences between the full path name and the file name depending on the file system in use.
                 MessageBox.Show("File name is over or close to char limit, file name reset");
                 if (renameIteration != 0)
                 {
-                    dest = Destination + '\\' + Path.GetFileNameWithoutExtension(source) + "_(" + renameIteration + ")_" + Path.GetExtension(source);
+                    targetPath = Destination + '\\' + Path.GetFileNameWithoutExtension(source) + "_(" + renameIteration + ")_" + Path.GetExtension(source);
                 }
                 else
                 {
-                    dest = Destination + '\\' + Path.GetFileName(source);
+                    targetPath = Destination + '\\' + Path.GetFileName(source);
                 }
             }
-            string[] pictureNames = new string[2];
-            pictureNames[0] = dest;
-            pictureNames[1] = dest2;
-            return pictureNames;
+            return new string[2] { targetPath, duplicatePath };
         }
 
         // Tells what file types are images
         public ArrayList makeFileTypes()
         {
-            ArrayList FileTypes = new ArrayList();
-            FileTypes.Add("*.JPG");
-            FileTypes.Add("*.JPEG");
-            FileTypes.Add("*.GIF");
-            FileTypes.Add("*.BMP");
-            FileTypes.Add("*.PNG");
-            FileTypes.Add("*.TIF");
-            FileTypes.Add("*.TIFF");
+            ArrayList FileTypes = new ArrayList
+            {
+                "*.JPG",
+                "*.JPEG",
+                "*.GIF",
+                "*.BMP",
+                "*.PNG",
+                "*.TIF",
+                "*.TIFF"
+            };
             return FileTypes;
         }
 
@@ -148,11 +123,11 @@ namespace SortImage
         {
             string[] szFiles;
             List<string> fileArray = new List<string>();
-            foreach (string szType in makeFileTypes())
-            {
+            foreach (string szType in makeFileTypes()) {
                 szFiles = Directory.GetFiles(filepath, szType);
-                if (szFiles.Length > 0)
+                if (szFiles.Length > 0) {
                     fileArray.AddRange(szFiles);
+                }
             }
             return fileArray;
         }
@@ -161,11 +136,11 @@ namespace SortImage
         {
             string[] szFiles;
             ArrayList fileArray = new ArrayList();
-            foreach (string szType in makeFileTypes())
-            {
+            foreach (string szType in makeFileTypes()) {
                 szFiles = Directory.GetFiles(filepath, szType);
-                if (szFiles.Length > 0)
+                if (szFiles.Length > 0) {
                     fileArray.AddRange(szFiles);
+                }
             }
             return fileArray;
         }

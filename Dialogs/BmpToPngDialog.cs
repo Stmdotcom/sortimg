@@ -9,7 +9,6 @@ namespace SortImage
     public partial class BmpToPngDialog : Form
     {
         string source;
-        int size;
         string filetype = "png";
         public BmpToPngDialog()
         {
@@ -19,8 +18,7 @@ namespace SortImage
         private void sourceBut_Click(object sender, EventArgs e)
         {
             folderBrowserDialog1.ShowNewFolderButton = false;
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
                 source = folderBrowserDialog1.SelectedPath;
                 sourceText.Text = source;
             }
@@ -28,28 +26,26 @@ namespace SortImage
 
         private void goBut_Click(object sender, EventArgs e)
         {
-            if (radioButtonJpg.Checked == true)
-            {
+            if (radioButtonJpg.Checked == true) {
                 filetype = "jpg";
-            }
-            else if (radioButtonPng.Checked == true)
-            {
+            } else if (radioButtonPng.Checked == true) {
                 filetype = "png";
             }
+
             ArrayList FileTypes= new ArrayList();
             ArrayList FileArray = new ArrayList();
             FileTypes.Add("*.BMP");
+
             string[] szFiles;
-            foreach (string szType in FileTypes)
-            {
+            foreach (string szType in FileTypes) {
                 szFiles = Directory.GetFiles(source, szType);
-                if (szFiles.Length > 0)
+                if (szFiles.Length > 0) {
                     FileArray.AddRange(szFiles);
+                }
             }
-            size = FileArray.Count;
-            progressBar1.Maximum = size;
-            foreach (string file in FileArray)
-            {
+
+            progressBar1.Maximum = FileArray.Count;
+            foreach (string file in FileArray) {
                 convertToPng(source, Path.GetFileNameWithoutExtension(file), file);
             }
             DialogResult = DialogResult.OK;
@@ -57,12 +53,10 @@ namespace SortImage
 
         private void convertToPng(string sourcedir, string sourceFile, string sourceDirandFile)
         {
-            try
-            {
+            try {
                 // Load the image.
                 System.Drawing.Image image1 = System.Drawing.Image.FromFile(sourceDirandFile);
-                if (filetype == "jpg")
-                {
+                if (filetype == "jpg") {
                     ImageCodecInfo jgpEncoder = GetEncoder(ImageFormat.Jpeg);
                     // Create an Encoder object based on the GUID
                     // for the Quality parameter category.
@@ -72,17 +66,13 @@ namespace SortImage
                     myEncoderParameters.Param[0] = myEncoderParameter;
                     image1.Save(sourcedir + "\\" + sourceFile + ".jpg", jgpEncoder, myEncoderParameters);
 
-                }
-                else if (filetype == "png")
-                {
+                } else if (filetype == "png") {
                     // Save the image in PNG format.
                     image1.Save(sourcedir + "\\" + sourceFile + ".png", ImageFormat.Png);
                 }
                 progressBar1.Increment(1);
-            }
-            catch
-            {
-                System.Diagnostics.Debug.WriteLine("Crap");
+            } catch {
+                System.Diagnostics.Debug.WriteLine("Convert ot PNG failed for " + sourceFile);
             }
         }
 

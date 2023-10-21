@@ -51,10 +51,6 @@ namespace SortImage
             this.buttonLoadMore = new System.Windows.Forms.Button();
             this.skipButton = new System.Windows.Forms.Button();
             this.trackBarSize = new System.Windows.Forms.TrackBar();
-            this.textBox7 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.addFolders = new System.Windows.Forms.Button();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -76,6 +72,7 @@ namespace SortImage
             this.bwSortImageFolder = new System.ComponentModel.BackgroundWorker();
             this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.imagesProgressBar = new SortImage.TextProgressBar();
             this.flowLayoutPanelMain = new SortImage.ThumbnailFlowLayoutPanel();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -141,7 +138,7 @@ namespace SortImage
             this.folderImageMergeToolStripMenuItem,
             this.convertBmpToPngToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // sortFolderToolStripMenuItem
@@ -205,8 +202,8 @@ namespace SortImage
             // 
             // pContainer
             // 
-            this.pContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pContainer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pContainer.AutoScroll = true;
             this.pContainer.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.pContainer.Location = new System.Drawing.Point(754, 44);
@@ -216,9 +213,9 @@ namespace SortImage
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.BackColor = System.Drawing.Color.Transparent;
             this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.splitContainer1.Location = new System.Drawing.Point(3, 3);
@@ -227,14 +224,11 @@ namespace SortImage
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainer1.Panel1.Controls.Add(this.imagesProgressBar);
             this.splitContainer1.Panel1.Controls.Add(this.buttonLoadMore);
             this.splitContainer1.Panel1.Controls.Add(this.skipButton);
             this.splitContainer1.Panel1.Controls.Add(this.flowLayoutPanelMain);
             this.splitContainer1.Panel1.Controls.Add(this.trackBarSize);
-            this.splitContainer1.Panel1.Controls.Add(this.textBox7);
-            this.splitContainer1.Panel1.Controls.Add(this.progressBar1);
-            this.splitContainer1.Panel1.Controls.Add(this.label1);
-            this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.addFolders);
             this.splitContainer1.Panel1MinSize = 145;
             // 
@@ -253,7 +247,7 @@ namespace SortImage
             this.buttonLoadMore.Enabled = false;
             this.buttonLoadMore.Image = global::SortImage.Properties.Resources.next;
             this.buttonLoadMore.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonLoadMore.Location = new System.Drawing.Point(116, 504);
+            this.buttonLoadMore.Location = new System.Drawing.Point(116, 520);
             this.buttonLoadMore.Name = "buttonLoadMore";
             this.buttonLoadMore.Size = new System.Drawing.Size(97, 34);
             this.buttonLoadMore.TabIndex = 45;
@@ -267,7 +261,7 @@ namespace SortImage
             this.skipButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.skipButton.Enabled = false;
             this.skipButton.Image = global::SortImage.Properties.Resources.redo;
-            this.skipButton.Location = new System.Drawing.Point(69, 504);
+            this.skipButton.Location = new System.Drawing.Point(69, 520);
             this.skipButton.Name = "skipButton";
             this.skipButton.Size = new System.Drawing.Size(41, 34);
             this.skipButton.TabIndex = 44;
@@ -276,8 +270,8 @@ namespace SortImage
             // 
             // trackBarSize
             // 
-            this.trackBarSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBarSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarSize.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.trackBarSize.Enabled = false;
             this.trackBarSize.LargeChange = 1;
@@ -289,51 +283,12 @@ namespace SortImage
             this.trackBarSize.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.trackBarSize.ValueChanged += new System.EventHandler(this.TrackBarSize_ValueChanged);
             // 
-            // textBox7
-            // 
-            this.textBox7.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.textBox7.AutoSize = true;
-            this.textBox7.Location = new System.Drawing.Point(58, 574);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(13, 13);
-            this.textBox7.TabIndex = 40;
-            this.textBox7.Text = "0";
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(22, 544);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(191, 23);
-            this.progressBar1.TabIndex = 20;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(119, 574);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(13, 13);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "0";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(100, 574);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(21, 13);
-            this.label2.TabIndex = 23;
-            this.label2.Text = "OF";
-            // 
             // addFolders
             // 
             this.addFolders.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.addFolders.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.addFolders.Image = global::SortImage.Properties.Resources.add;
-            this.addFolders.Location = new System.Drawing.Point(22, 504);
+            this.addFolders.Location = new System.Drawing.Point(8, 520);
             this.addFolders.Name = "addFolders";
             this.addFolders.Size = new System.Drawing.Size(41, 34);
             this.addFolders.TabIndex = 39;
@@ -342,9 +297,9 @@ namespace SortImage
             // 
             // splitContainer2
             // 
-            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer2.Location = new System.Drawing.Point(-3, -1);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -369,9 +324,9 @@ namespace SortImage
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.BackColor = System.Drawing.Color.Silver;
             this.pictureBox1.Enabled = false;
             this.pictureBox1.Location = new System.Drawing.Point(3, 0);
@@ -382,8 +337,8 @@ namespace SortImage
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             this.pictureBox1.MouseEnter += new System.EventHandler(this.pictureBox_Info_create);
-            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_Info_update);
             this.pictureBox1.MouseLeave += new System.EventHandler(this.pictureBox_Info_remove);
+            this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_Info_update);
             // 
             // name
             // 
@@ -395,8 +350,8 @@ namespace SortImage
             // 
             // butOrignText
             // 
-            this.butOrignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.butOrignText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.butOrignText.Enabled = false;
             this.butOrignText.Location = new System.Drawing.Point(326, 37);
             this.butOrignText.Name = "butOrignText";
@@ -408,9 +363,9 @@ namespace SortImage
             // 
             // tagList
             // 
-            this.tagList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tagList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tagList.CheckOnClick = true;
             this.tagList.Enabled = false;
             this.tagList.FormattingEnabled = true;
@@ -426,17 +381,17 @@ namespace SortImage
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("DejaVu Sans", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(263, 9);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(28, 19);
+            this.label8.Size = new System.Drawing.Size(23, 20);
             this.label8.TabIndex = 16;
             this.label8.Text = "->";
             // 
             // addTag
             // 
-            this.addTag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.addTag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.addTag.Enabled = false;
             this.addTag.Image = global::SortImage.Properties.Resources.notes;
             this.addTag.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -450,8 +405,8 @@ namespace SortImage
             // 
             // newName
             // 
-            this.newName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.newName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.newName.Location = new System.Drawing.Point(296, 8);
             this.newName.Name = "newName";
             this.newName.ReadOnly = true;
@@ -460,8 +415,8 @@ namespace SortImage
             // 
             // tag
             // 
-            this.tag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tag.Location = new System.Drawing.Point(378, 37);
             this.tag.Name = "tag";
             this.tag.Size = new System.Drawing.Size(140, 20);
@@ -478,9 +433,9 @@ namespace SortImage
             // 
             // mainPanel
             // 
-            this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.mainPanel.BackColor = System.Drawing.SystemColors.Window;
             this.mainPanel.Controls.Add(this.toDupButton);
             this.mainPanel.Controls.Add(this.Undo);
@@ -588,15 +543,30 @@ namespace SortImage
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(116, 26);
             // 
+            // imagesProgressBar
+            // 
+            this.imagesProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.imagesProgressBar.CustomText = "";
+            this.imagesProgressBar.Location = new System.Drawing.Point(8, 560);
+            this.imagesProgressBar.Maximum = 0;
+            this.imagesProgressBar.Name = "imagesProgressBar";
+            this.imagesProgressBar.ProgressColor = System.Drawing.Color.LightGreen;
+            this.imagesProgressBar.Size = new System.Drawing.Size(205, 27);
+            this.imagesProgressBar.TabIndex = 46;
+            this.imagesProgressBar.TextColor = System.Drawing.Color.Black;
+            this.imagesProgressBar.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.imagesProgressBar.VisualMode = SortImage.ProgressBarDisplayMode.CurrProgress;
+            // 
             // flowLayoutPanelMain
             // 
-            this.flowLayoutPanelMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanelMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanelMain.AutoScroll = true;
             this.flowLayoutPanelMain.Location = new System.Drawing.Point(-1, 40);
             this.flowLayoutPanelMain.Name = "flowLayoutPanelMain";
-            this.flowLayoutPanelMain.Size = new System.Drawing.Size(221, 456);
+            this.flowLayoutPanelMain.Size = new System.Drawing.Size(221, 474);
             this.flowLayoutPanelMain.TabIndex = 43;
             this.flowLayoutPanelMain.Paint += new System.Windows.Forms.PaintEventHandler(this.flowLayoutPanelMain_Paint);
             this.flowLayoutPanelMain.MouseDown += new System.Windows.Forms.MouseEventHandler(this.flowLayoutPanelMain_MouseDown);
@@ -649,10 +619,7 @@ namespace SortImage
         private System.Windows.Forms.Button foldAdd;
         private System.Windows.Forms.Button Undo;
         private System.Windows.Forms.Button Delete;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel pContainer;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button toDupButton;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -670,7 +637,6 @@ namespace SortImage
         private System.Windows.Forms.Button addFolders;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Panel mainPanel;
-        private System.Windows.Forms.Label textBox7;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sortFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sortByMD5ToolStripMenuItem;
@@ -684,6 +650,7 @@ namespace SortImage
         private System.Windows.Forms.Button buttonLoadMore;
         private System.Windows.Forms.ToolStripMenuItem changeToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private TextProgressBar imagesProgressBar;
     }
 }
 

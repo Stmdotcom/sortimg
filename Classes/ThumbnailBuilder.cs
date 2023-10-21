@@ -28,6 +28,7 @@ namespace SortImage
             } catch {
                 System.Diagnostics.Debug.WriteLine("Thumb build error");
             }
+
             Int32 ImgW = img.Width;
             Int32 ImgH = img.Height;
             Int32 imgHeight = ScaleImage(ImgW, ImgH);
@@ -39,8 +40,7 @@ namespace SortImage
                 img.Dispose();
                 System.Diagnostics.Debug.WriteLine("System created thumb");
                 return pp;
-            } catch (Exception) //Custom thumbnail, set at high quality.
-              {
+            } catch (Exception) { //Custom thumbnail, set at high quality.
                 System.Diagnostics.Debug.WriteLine("Thumb build error 2");
                 return CustomThumb(img, 100, 100);
             } finally {

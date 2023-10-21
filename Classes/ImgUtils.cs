@@ -17,15 +17,13 @@ namespace SortImage
                 return false;
             }
 
-            try
-            {
+            try {
                 if (image == null) {
                     image = Image.FromFile(imagePath);
                 }
+
                 return ImageAnimator.CanAnimate(image);
-            }
-            catch
-            {
+            } catch {
                 return false;
             }
         }
